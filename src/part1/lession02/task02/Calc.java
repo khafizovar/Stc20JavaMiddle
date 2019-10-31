@@ -24,7 +24,7 @@ public class Calc {
             numbers.add(random.nextInt());
 
         for (Integer k  :numbers) {
-            if(n < 0) {
+            if(k < 0) {
                 throw new Exception("Найдено отрицательное число");
             }
             Double q = Math.sqrt(k);

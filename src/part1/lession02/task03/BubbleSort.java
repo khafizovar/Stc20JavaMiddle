@@ -29,7 +29,7 @@ public class BubbleSort implements Sort {
             for (int i = 1; i < p.length; i++) {
                 if(p[i].getAge() == p[i - 1].getAge() &&
                         p[i].getName().equals(p[i - 1].getName())) {
-                    throw new Exception("Найдены элементы с одинаковым именем и возрастом");
+                    throw new MatchingItemsFoundException("Найдены элементы с одинаковым именем и возрастом");
                 }
 
                 if (p[i].getSex().compareTo(p[i - 1].getSex()) < 0) {               //по первому полю

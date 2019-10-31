@@ -12,13 +12,17 @@ import java.util.Random;
  * Если имена людей и возраст совпадают, выбрасывать в программе пользовательское исключение.
  */
 public class Main {
-    private static final int ARR_SIZE = 100;
+    private static final int ARR_SIZE = 20000;
     private static final Random rnd = new Random();
 
+    /**
+     * Генерация случайной строки
+     * @param targetStringLength  длинна генерируемой строки
+     * @return
+     */
     static String getRandomString(int targetStringLength) {
         int leftLimit = 97; // letter 'a'
         int rightLimit = 122; // letter 'z'
-        //Random random = new Random();
         StringBuilder buffer = new StringBuilder(targetStringLength);
         for (int i = 0; i < targetStringLength; i++) {
             int randomLimitedInt = leftLimit + (int)
@@ -38,13 +42,14 @@ public class Main {
         for (int i = 0; i < ARR_SIZE; i++) {
             Person p = new Person(rnd.nextInt(100),
                     Main.getRandomString(5),
-                    (rnd.nextInt(2) == 1) ? Person.SexEnum.MAN : Person.SexEnum.WOMAN);
+                    rnd.nextBoolean() ? Person.SexEnum.MAN : Person.SexEnum.WOMAN);
             persons[i] = p;
         }
-        System.out.println("-------------original data----------");
+        /*System.out.println("-------------original data----------");
         for (Person p: persons) {
             System.out.println(p.toString());
-        }
+        }*/
+        System.out.println("Количество элементов: " + ARR_SIZE);
         System.out.println("-------------selection sort ----------");
         tmpDate = System.currentTimeMillis();
         Person[] sorted1 = firstTypeSort.sort(persons);

@@ -19,7 +19,7 @@ public class SelectionSort implements Sort {
     }
 
     /**
-     * Сортиро
+     * Сортировка выбором
      * @param p
      */
     private void selectionSort (Person[] p) {

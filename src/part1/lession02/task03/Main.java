@@ -12,7 +12,7 @@ import java.util.Random;
  * Если имена людей и возраст совпадают, выбрасывать в программе пользовательское исключение.
  */
 public class Main {
-    private static final int ARR_SIZE = 20000;
+    private static final int ARR_SIZE = 10000;
     private static final Random rnd = new Random();
 
     /**
@@ -32,7 +32,7 @@ public class Main {
         return buffer.toString();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         long tmpDate;
         Sort firstTypeSort = new SelectionSort();
         Sort secondTypeSort = new BubbleSort();

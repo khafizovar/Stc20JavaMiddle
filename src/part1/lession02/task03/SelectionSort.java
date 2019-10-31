@@ -12,7 +12,7 @@ public class SelectionSort implements Sort {
      * @return отсортированный массив объектов Person @see {@link Person}
      */
     @Override
-    public Person[] sort(Person[] persons) {
+    public Person[] sort(Person[] persons) throws Exception {
         Person[] p = Arrays.copyOf(persons,persons.length);
         this.selectionSort(p);
         return p;
@@ -22,10 +22,14 @@ public class SelectionSort implements Sort {
      * Сортировка выбором
      * @param p
      */
-    private void selectionSort (Person[] p) {
+    private void selectionSort (Person[] p) throws Exception {
         for (int left = 0; left < p.length; left++) {
             int minInd = left;
             for (int i = left; i < p.length; i++) {
+                if(p[i].getAge() == p[minInd].getAge() &&
+                        p[i].getName().equals(p[minInd].getName()) && i != minInd) {
+                    throw new Exception("Найдены элементы с одинаковым именем и возрастом");
+                }
                 if (p[i].getSex().compareTo(p[minInd].getSex()) < 0) {              //по первому полю
                     minInd = i;
                 } else if( p[i].getSex().compareTo(p[minInd].getSex()) == 0) {

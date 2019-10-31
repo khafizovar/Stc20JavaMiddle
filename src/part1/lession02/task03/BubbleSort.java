@@ -12,7 +12,7 @@ public class BubbleSort implements Sort {
      * @return отсортированный массив объектов Person @see {@link Person}
      */
     @Override
-    public Person[] sort(Person[] persons) {
+    public Person[] sort(Person[] persons) throws Exception {
         Person[] p = Arrays.copyOf(persons,persons.length);
         this.bubbleSort(p);
         return p;
@@ -22,11 +22,16 @@ public class BubbleSort implements Sort {
      * Сортировка пузырьком объектов {@link Person}
      * @param p Исходный массив для сортировки
      */
-    private void bubbleSort(Person[] p) {
+    private void bubbleSort(Person[] p) throws Exception {
         boolean needIteration = true;
         while (needIteration) {
             needIteration = false;
             for (int i = 1; i < p.length; i++) {
+                if(p[i].getAge() == p[i - 1].getAge() &&
+                        p[i].getName().equals(p[i - 1].getName())) {
+                    throw new Exception("Найдены элементы с одинаковым именем и возрастом");
+                }
+
                 if (p[i].getSex().compareTo(p[i - 1].getSex()) < 0) {               //по первому полю
                     swap(p, i, i - 1);
                     needIteration = true;

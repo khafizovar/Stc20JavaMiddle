@@ -1,6 +1,5 @@
 package part1.lession02.task03;
 
-import java.nio.charset.Charset;
 import java.util.Random;
 
 /**
@@ -13,57 +12,40 @@ import java.util.Random;
  * Если имена людей и возраст совпадают, выбрасывать в программе пользовательское исключение.
  */
 public class Main {
-    private static final int ARR_SIZE = 10;
+    private static final int ARR_SIZE = 100;
     private static final Random rnd = new Random();
 
-    static String getAlphaNumericString(int n) {
-        // length is bounded by 256 Character
-        byte[] array = new byte[256];
-        new Random().nextBytes(array);
-
-        String randomString
-                = new String(array, Charset.forName("UTF-8"));
-
-        // Create a StringBuffer to store the result
-        StringBuffer r = new StringBuffer();
-
-        // Append first 20 alphanumeric characters
-        // from the generated random String into the result
-        for (int k = 0; k < randomString.length(); k++) {
-
-            char ch = randomString.charAt(k);
-
-            if (((ch >= 'a' && ch <= 'z')
-                    || (ch >= 'A' && ch <= 'Z'))
-                    && (n > 0)) {
-
-                r.append(ch);
-                n--;
-            }
+    static String getRandomString(int targetStringLength) {
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        //Random random = new Random();
+        StringBuilder buffer = new StringBuilder(targetStringLength);
+        for (int i = 0; i < targetStringLength; i++) {
+            int randomLimitedInt = leftLimit + (int)
+                    (rnd.nextFloat() * (rightLimit - leftLimit + 1));
+            buffer.append((char) randomLimitedInt);
         }
-
-        // return the resultant string
-        return r.toString();
+        return buffer.toString();
     }
 
     public static void main(String[] args) {
         long tmpDate;
-        Sort firstTypeSort = new FirstSort();
-        Sort secondTypeSort = new SecondSort();
+        Sort firstTypeSort = new SelectionSort();
+        Sort secondTypeSort = new BubbleSort();
 
         /* Генерация данных */
         Person[] persons = new Person[ARR_SIZE];
         for (int i = 0; i < ARR_SIZE; i++) {
             Person p = new Person(rnd.nextInt(100),
-                    Main.getAlphaNumericString(1),
+                    Main.getRandomString(5),
                     (rnd.nextInt(2) == 1) ? Person.SexEnum.MAN : Person.SexEnum.WOMAN);
             persons[i] = p;
         }
         System.out.println("-------------original data----------");
-        /*for (Person p: persons) {
+        for (Person p: persons) {
             System.out.println(p.toString());
-        }*/
-        System.out.println("-------------first sort ----------");
+        }
+        System.out.println("-------------selection sort ----------");
         tmpDate = System.currentTimeMillis();
         Person[] sorted1 = firstTypeSort.sort(persons);
         System.out.println("Затрачено:" + (System.currentTimeMillis() - tmpDate) + " мс");
@@ -71,13 +53,12 @@ public class Main {
             System.out.println(p.toString());
         }
 
-        System.out.println("-------------second sort ----------");
+        System.out.println("-------------bubble sort ----------");
         tmpDate = System.currentTimeMillis();
         Person[] sorted2 = secondTypeSort.sort(persons);
         System.out.println("Затрачено:" + (System.currentTimeMillis() - tmpDate) + " мс");
         for (Person p : sorted2) {
             System.out.println(p.toString());
         }
-        //persons.forEach(p -> System.out.println(p));
     }
 }

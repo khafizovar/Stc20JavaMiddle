@@ -10,7 +10,7 @@ import java.util.Random;
  * в этом случае генерировать исключение.
  */
 public class Calc {
-    private static final int MAX_VALUE = 10;
+    //private static final int MAX_VALUE = 10;
     final Random random = new Random();
     /**
      * @param n количество случайных чисел
@@ -21,11 +21,14 @@ public class Calc {
         }
         List<Integer> numbers = new ArrayList<Integer>();
         for(int i=0; i<n; i++)
-            numbers.add(random.nextInt(MAX_VALUE));
+            numbers.add(random.nextInt());
 
         for (Integer k  :numbers) {
+            if(n < 0) {
+                throw new Exception("Найдено отрицательное число");
+            }
             Double q = Math.sqrt(k);
-            //System.out.println(k + "; Math.sqrt(k):" + q + "; q.intValue():" + q.intValue() + "; Math.pow(q,2):" + Math.pow(q,2));
+
             if(Math.pow(q.intValue(),2) == k) {
                 System.out.println(k);
             }

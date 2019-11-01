@@ -2,6 +2,7 @@ package part1.lession02.task03;
 
 /**
  * Person
+ * @author KhafizovAR
  */
 public class Person {
     //private final static String MAN = "man";

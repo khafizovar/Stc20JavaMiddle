@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 /**
  * Реализация первого класса сортировки
+ * @author KhafizovAR
  */
 public class SelectionSort implements Sort {
     /**

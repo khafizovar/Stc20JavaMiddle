@@ -4,6 +4,7 @@ import java.util.*;
 
 /**
  * Реализация второго класса сортировки
+ * @author KhafizovAR
  */
 public class BubbleSort implements Sort {
     /**

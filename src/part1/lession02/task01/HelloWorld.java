@@ -6,6 +6,7 @@ package part1.lession02.task01;
  * Смоделировав ошибку «NullPointerException»
  * Смоделировав ошибку «ArrayIndexOutOfBoundsException»
  * Вызвав свой вариант ошибки через оператор throw
+ * @author KhafizovAR
  */
 public class HelloWorld {
     public static void main(String[] args) throws Exception {

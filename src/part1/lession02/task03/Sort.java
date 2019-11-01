@@ -2,6 +2,7 @@ package part1.lession02.task03;
 
 /**
  * Интерфейс сортировки объектов
+ * @author KhafizovAR
  */
 public interface Sort {
     /**

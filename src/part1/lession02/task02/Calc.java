@@ -26,7 +26,7 @@ public class Calc {
         List<Integer> numbers = new ArrayList<Integer>();
         for (int i = 0; i < n; i++)
             //numbers.add(random.nextInt(MAX_VALUE));
-            numbers.add(random.nextInt(MAX_VALUE));
+            numbers.add(random.nextInt());
 
         for (Integer k : numbers) {
             try {

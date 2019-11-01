@@ -26,7 +26,13 @@ public class HelloWorld {
             ex.printStackTrace();
         }
         //MyException
-        throw new Exception("My custom Exception");
+        throw new HelloWorld().new CustomException("My custom Exception");
 
+    }
+
+    class CustomException extends Exception {
+        CustomException(String errorMessage) {
+            super(errorMessage);
+        }
     }
 }

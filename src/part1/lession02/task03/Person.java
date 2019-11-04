@@ -5,6 +5,7 @@ package part1.lession02.task03;
  * @author KhafizovAR
  */
 public class Person {
+    // закомментированный код
     //private final static String MAN = "man";
     //private final static String WOMAN = "woman";
 
@@ -16,6 +17,7 @@ public class Person {
         MAN, WOMAN
     }
 
+    //мёртвый код
     Person() { }
 
     Person(int age, String name, SexEnum sex) {
@@ -28,6 +30,7 @@ public class Person {
         return age;
     }
 
+    //сеттеры мёртвый код
     public void setAge(int age) {
         this.age = age;
     }

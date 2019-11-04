@@ -22,8 +22,10 @@ public class Main {
      * @return
      */
     static String getRandomString(int targetStringLength) {
+        // хорошо, что откомментировали, что значат эти числа, но можно было это сделать за счёт лучших имён переменных
         int leftLimit = 97; // letter 'a'
         int rightLimit = 122; // letter 'z'
+        // так билдер или буффер?
         StringBuilder buffer = new StringBuilder(targetStringLength);
         for (int i = 0; i < targetStringLength; i++) {
             int randomLimitedInt = leftLimit + (int)
@@ -46,11 +48,13 @@ public class Main {
                     rnd.nextBoolean() ? Person.SexEnum.MAN : Person.SexEnum.WOMAN);
             persons[i] = p;
         }
+        //закомментированный код
         /*System.out.println("-------------original data----------");
         for (Person p: persons) {
             System.out.println(p.toString());
         }*/
         System.out.println("Количество элементов: " + ARR_SIZE);
+        //ниже у нас дублирующийся код. Подумайте, как можно этого избежать
         System.out.println("-------------selection sort ----------");
         tmpDate = System.currentTimeMillis();
         Person[] sorted1 = firstTypeSort.sort(persons);

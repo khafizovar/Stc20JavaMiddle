@@ -26,6 +26,7 @@ public class HelloWorld {
             ex.printStackTrace();
         }
         //MyException
+        //тут можно не инстанцировать ненужный объект класса HelloWorld, подумайте как
         throw new HelloWorld().new CustomException("My custom Exception");
 
     }

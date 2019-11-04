@@ -28,8 +28,10 @@ public class BubbleSort implements Sort {
         while (needIteration) {
             needIteration = false;
             for (int i = 1; i < p.length; i++) {
+                // подходящее ли это место для этой проверки?
                 if(p[i].getAge() == p[i - 1].getAge() &&
                         p[i].getName().equals(p[i - 1].getName())) {
+                    // зачем нужно выбрасывать именно такой исключение?
                     throw new MatchingItemsFoundException("Найдены элементы с одинаковым именем и возрастом");
                 }
 

@@ -12,8 +12,6 @@ public class Main {
         ObjectBox mb = new MathBox(data);
 
         System.out.println(mb.toString());
-        //System.out.println(mb.summator());
-        //mb.splitter(18);
         mb.addBox(new Double(123));
         mb.addBox(new Integer(1235));
         mb.addBox(new Float(999));

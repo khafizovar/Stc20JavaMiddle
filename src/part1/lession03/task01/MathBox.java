@@ -45,7 +45,12 @@ public class MathBox {
         this.numbers = rez;
     }
 
-    public boolean removeInt(int num) {
+    /**
+     * Удаление объекта типа {@link Integer}, если он есть
+     * @param num   удаляемый объект
+     * @return
+     */
+    public boolean removeInt(Integer num) {
         return this.numbers.remove(num);
     }
 

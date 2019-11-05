@@ -25,5 +25,8 @@ public class Main {
         System.out.println("mb:" + mb.hashCode());
         System.out.println("mb2:" + mb2.hashCode());
         System.out.println("equals:" + mb.equals(mb2));
+        System.out.println("-----------removeInt------------");
+        mb.removeInt(20);
+        System.out.println(mb.toString());
     }
 }

@@ -49,12 +49,40 @@ public class MathBox {
         return this.numbers.remove(num);
     }
 
-    public void print() {
+    @Override
+    public String toString() {
         String s = "[";
-        for (Number n: numbers) {
+        for (Number n : numbers) {
             s += n + "\t";
         }
-        s+="]";
-        System.out.println(s);
+        s += "]";
+        //System.out.println(s);
+        return s;
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((numbers == null) ? 0 : numbers.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        MathBox other = (MathBox) obj;
+        if (numbers == null) {
+            if (other.numbers != null)
+                return false;
+        } else if (!numbers.equals(other.numbers))
+            return false;
+        return true;
+    }
+
 }

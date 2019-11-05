@@ -64,12 +64,6 @@ public class ObjectBox {
 
     @Override
     public String toString() {
-        StringBuilder s = new StringBuilder("{");
-        for (Object obj:
-                objectCollection) {
-            s.append(obj.toString() + ";");
-        }
-        s.replace(s.length() - 2,s.length()-1, "}");
-        return s.toString();
+        return "ObjectBox [objectCollection=" + objectCollection + "]";
     }
 }

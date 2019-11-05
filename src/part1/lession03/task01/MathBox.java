@@ -50,22 +50,16 @@ public class MathBox {
     }
 
     @Override
-    public String toString() {
-        String s = "[";
-        for (Number n : numbers) {
-            s += n + "\t";
-        }
-        s += "]";
-        //System.out.println(s);
-        return s;
-    }
-
-    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((numbers == null) ? 0 : numbers.hashCode());
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MathBox [numbers=" + numbers + "]";
     }
 
     @Override

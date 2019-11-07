@@ -18,9 +18,9 @@ public class Calc {
      * @return Результат вычислений {@link CalcResult}
      * @throws Exception
      */
-    public CalcResult calculate(int n) throws Exception {
+    public CalcResult calculate(int n) throws IllegalArgumentException {
         if (n < 1) {
-            throw new Exception("Для генерации параметр n должен быть больше 0");
+            throw new IllegalArgumentException("Для генерации параметр n должен быть больше 0");
         }
         List<Integer> numbers = new ArrayList<Integer>();
         for (int i = 0; i < n; i++)
@@ -44,9 +44,9 @@ public class Calc {
      * Проверка удовлетворяет ли число условию
      * @param k число для анализа
      * @return  true|false удовлетворяет|неудовлетворяет
-     * @throws Exception
+     * @throws NegativeNumberException
      */
-    private boolean isSatisfy(int k) throws Exception {
+    private boolean isSatisfy(int k) throws NegativeNumberException {
         if (k < 0) {
             throw new NegativeNumberException("Найдено отрицательное число");
         }

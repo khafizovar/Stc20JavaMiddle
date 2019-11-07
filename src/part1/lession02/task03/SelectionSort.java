@@ -27,7 +27,6 @@ public class SelectionSort implements Sort {
         for (int left = 0; left < p.length; left++) {
             int minInd = left;
             for (int i = left; i < p.length; i++) {
-                // подходящее ли это место для этой проверки?
                 if(p[i].getAge() == p[minInd].getAge() &&
                         p[i].getName().equals(p[minInd].getName()) && i != minInd) {
                     // зачем нужно выбрасывать именно такой исключение?

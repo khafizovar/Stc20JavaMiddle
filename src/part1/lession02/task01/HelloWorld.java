@@ -30,7 +30,7 @@ public class HelloWorld {
 
     }
 
-    private static class CustomException extends Exception {
+    static class CustomException extends Exception {
         CustomException(String errorMessage) {
             super(errorMessage);
         }

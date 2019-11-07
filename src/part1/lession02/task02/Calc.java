@@ -12,11 +12,7 @@ import java.util.Random;
  */
 public class Calc {
     private final Random random = new Random();
-    /**
-     * @param
-     * @return Массив из двух элементво. 0 -  {@link List} Содержит числа удволетворяющие услвоию, 1 - {@link List} отрицательные числа
-     */
-    /**
+     /**
      *
      * @param n количество случайных чисел
      * @return Результат вычислений {@link CalcResult}

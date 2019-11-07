@@ -33,19 +33,9 @@ public class BubbleSort implements Sort {
         while (needIteration) {
             needIteration = false;
             for (int i = 1; i < p.length; i++) {
-                if (p[i].getSex().compareTo(p[i - 1].getSex()) < 0) {               //по первому полю
+                if (p[i].compareTo(p[i - 1]) < 0) {              
                     swap(p, i, i - 1);
                     needIteration = true;
-                } else if( p[i].getSex().compareTo(p[i - 1].getSex()) == 0) {
-                    if (p[i].getAge() > p[i - 1].getAge()) {                         //по второму полю
-                        swap(p, i, i - 1);
-                        needIteration = true;
-                    } else if(p[i].getAge() == p[i - 1].getAge()) {
-                        if (p[i].getName().compareTo(p[i - 1].getName()) < 0) {     //по третьему полю
-                            swap(p, i, i - 1);
-                            needIteration = true;
-                        }
-                    }
                 }
             }
         }

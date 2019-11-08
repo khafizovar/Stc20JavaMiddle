@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static java.util.Objects.isNull;
+
 /**
  * @author KhafizovAR
  */
@@ -11,7 +13,6 @@ public class MathBox extends ObjectBox {
 
     public MathBox(Number[] number) {
         objectCollection = new HashSet<Object>(Arrays.asList(number));
-        objectCollection.remove(null);
     }
 
     /**
@@ -21,7 +22,8 @@ public class MathBox extends ObjectBox {
     public Number summator() {
         double summ = 0;
         for (Object n: this.objectCollection) {
-            summ += ((Number)n).doubleValue();
+            if(!isNull(n))
+                summ += ((Number)n).doubleValue();
         }
         return summ;
     }
@@ -33,7 +35,10 @@ public class MathBox extends ObjectBox {
     public void splitter(double num) {
         Set<Object> rez = new HashSet<>();
         for (Object n: this.objectCollection) {
-            rez.add(((Number)n).doubleValue() / num);
+            if(!isNull(n))
+                rez.add(((Number)n).doubleValue() / num);
+            else
+                rez.add(null);
         }
         this.objectCollection = rez;
     }

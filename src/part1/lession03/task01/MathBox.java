@@ -18,7 +18,6 @@ public class MathBox {
 
     public MathBox(Number[] number) {
         numbers = new HashSet<Number>(Arrays.asList(number));
-        numbers.remove(null);
     }
 
     /**
@@ -28,7 +27,8 @@ public class MathBox {
     public Number summator() {
         double summ = 0;
         for (Number n: this.numbers) {
-            summ += n.doubleValue();
+            if(n != null)
+                summ += n.doubleValue();
         }
         return summ;
     }
@@ -40,7 +40,10 @@ public class MathBox {
     public void splitter(double num) {
         Set<Number> rez = new HashSet<>();
         for (Number n: this.numbers) {
-            rez.add(n.doubleValue() / num);
+            if(n != null)
+                rez.add(n.doubleValue() / num);
+            else
+                rez.add(null);
         }
         this.numbers = rez;
     }

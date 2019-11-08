@@ -19,7 +19,8 @@ public class Main {
         mb.deleteObject(new Float(999));
         System.out.println(mb.toString());
         System.out.println(((MathBox)mb).summator());
-
+        ((MathBox) mb).splitter(15);
+        System.out.println(mb.toString());
         mb.addBox(new Object());
     }
 }

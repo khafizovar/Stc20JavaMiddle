@@ -1,5 +1,7 @@
 package part1.lession02.task03;
 
+import helpers.Helper;
+
 import java.util.*;
 
 /**
@@ -24,28 +26,16 @@ public class BubbleSort implements Sort {
      * @param p Исходный массив для сортировки
      */
     private void bubbleSort(Person[] p) throws Exception {
+        if(Helper.checkForDupleByAgeAndName(p))
+            throw new DupleByAgeAndNameFoundException("Найдены элементы с одинаковым именем и возрастом");
+
         boolean needIteration = true;
         while (needIteration) {
             needIteration = false;
             for (int i = 1; i < p.length; i++) {
-                if(p[i].getAge() == p[i - 1].getAge() &&
-                        p[i].getName().equals(p[i - 1].getName())) {
-                    throw new MatchingItemsFoundException("Найдены элементы с одинаковым именем и возрастом");
-                }
-
-                if (p[i].getSex().compareTo(p[i - 1].getSex()) < 0) {               //по первому полю
+                if (p[i].compareTo(p[i - 1]) < 0) {
                     swap(p, i, i - 1);
                     needIteration = true;
-                } else if( p[i].getSex().compareTo(p[i - 1].getSex()) == 0) {
-                    if (p[i].getAge() > p[i - 1].getAge()) {                         //по второму полю
-                        swap(p, i, i - 1);
-                        needIteration = true;
-                    } else if(p[i].getAge() == p[i - 1].getAge()) {
-                        if (p[i].getName().compareTo(p[i - 1].getName()) < 0) {     //по третьему полю
-                            swap(p, i, i - 1);
-                            needIteration = true;
-                        }
-                    }
                 }
             }
         }

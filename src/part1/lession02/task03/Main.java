@@ -22,19 +22,18 @@ public class Main {
      * @return
      */
     static String getRandomString(int targetStringLength) {
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        StringBuilder buffer = new StringBuilder(targetStringLength);
+        int aDecCode = 97;
+        int zDecCode = 122;
+        StringBuilder sb = new StringBuilder(targetStringLength);
         for (int i = 0; i < targetStringLength; i++) {
-            int randomLimitedInt = leftLimit + (int)
-                    (rnd.nextFloat() * (rightLimit - leftLimit + 1));
-            buffer.append((char) randomLimitedInt);
+            int randomLimitedInt = aDecCode + (int)
+                    (rnd.nextFloat() * (zDecCode - aDecCode + 1));
+            sb.append((char) randomLimitedInt);
         }
-        return buffer.toString();
+        return sb.toString();
     }
 
     public static void main(String[] args) throws Exception {
-        long tmpDate;
         Sort firstTypeSort = new SelectionSort();
         Sort secondTypeSort = new BubbleSort();
 
@@ -46,24 +45,34 @@ public class Main {
                     rnd.nextBoolean() ? Person.SexEnum.MAN : Person.SexEnum.WOMAN);
             persons[i] = p;
         }
-        /*System.out.println("-------------original data----------");
-        for (Person p: persons) {
-            System.out.println(p.toString());
-        }*/
         System.out.println("Количество элементов: " + ARR_SIZE);
         System.out.println("-------------selection sort ----------");
-        tmpDate = System.currentTimeMillis();
+        long tmpDate = System.currentTimeMillis();
         Person[] sorted1 = firstTypeSort.sort(persons);
         System.out.println("Затрачено:" + (System.currentTimeMillis() - tmpDate) + " мс");
-        for (Person p: sorted1) {
-            System.out.println(p.toString());
-        }
+        printInfo(sorted1);
 
         System.out.println("-------------bubble sort ----------");
         tmpDate = System.currentTimeMillis();
         Person[] sorted2 = secondTypeSort.sort(persons);
         System.out.println("Затрачено:" + (System.currentTimeMillis() - tmpDate) + " мс");
-        for (Person p : sorted2) {
+        printInfo(sorted2);
+
+        System.out.println("------------дубли по возрасту и имени");
+        persons = new Person[4];
+        persons[0] = new Person(5, "a", Person.SexEnum.WOMAN );
+        persons[1] = new Person(5, "b", Person.SexEnum.MAN );
+        persons[2] = new Person(5, "b", Person.SexEnum.MAN );
+        persons[3] = new Person(5, "c", Person.SexEnum.MAN );
+        firstTypeSort.sort(persons);
+    }
+
+    /**
+     * Вывпод в консоль массива построчно
+     * @param array объект для вывода в консоль
+     */
+    static void printInfo(Person[] array) {
+        for (Person p: array) {
             System.out.println(p.toString());
         }
     }

@@ -1,5 +1,7 @@
 package part1.lession02.task03;
 
+import helpers.Helper;
+
 import java.util.Arrays;
 
 /**
@@ -24,23 +26,14 @@ public class SelectionSort implements Sort {
      * @param p
      */
     private void selectionSort (Person[] p) throws Exception {
+        if(Helper.checkForDupleByAgeAndName(p))
+            throw new DupleByAgeAndNameFoundException("Найдены элементы с одинаковым именем и возрастом");
+
         for (int left = 0; left < p.length; left++) {
             int minInd = left;
             for (int i = left; i < p.length; i++) {
-                if(p[i].getAge() == p[minInd].getAge() &&
-                        p[i].getName().equals(p[minInd].getName()) && i != minInd) {
-                    throw new MatchingItemsFoundException("Найдены элементы с одинаковым именем и возрастом");
-                }
-                if (p[i].getSex().compareTo(p[minInd].getSex()) < 0) {              //по первому полю
+                if (p[i].compareTo(p[minInd]) < 0) {
                     minInd = i;
-                } else if( p[i].getSex().compareTo(p[minInd].getSex()) == 0) {
-                    if (p[i].getAge() > p[minInd].getAge()) {                       //по второму полю
-                        minInd = i;
-                    } else if(p[i].getAge() == p[minInd].getAge()) {
-                        if (p[i].getName().compareTo(p[minInd].getName()) < 0) {    //по третьему полю
-                            minInd = i;
-                        }
-                    }
                 }
             }
             swap(p, left, minInd);

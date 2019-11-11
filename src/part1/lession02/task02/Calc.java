@@ -11,66 +11,73 @@ import java.util.Random;
  * @author KhafizovAR
  */
 public class Calc {
-    private static final int MAX_VALUE = 10;
-    final Random random = new Random();
-    /**
+    private final Random random = new Random();
+     /**
+     *
      * @param n количество случайных чисел
-     * @return Массив из двух элементво. 0 -  {@link List} Содержит числа удволетворяющие услвоию, 1 - {@link List} отрицательные числа
+     * @return Результат вычислений {@link CalcResult}
+     * @throws Exception
      */
-    public List[] calculate(int n) throws Exception {
-        List<Integer> res = new ArrayList<Integer>();
-        List<Integer> wrongNumbers = new ArrayList<Integer>();
+    public CalcResult calculate(int n) throws IllegalArgumentException {
         if (n < 1) {
-            throw new Exception("Для генерации параметр n должен быть больше 0");
+            throw new IllegalArgumentException("Для генерации параметр n должен быть больше 0");
         }
         List<Integer> numbers = new ArrayList<Integer>();
         for (int i = 0; i < n; i++)
-            //numbers.add(random.nextInt(MAX_VALUE));
             numbers.add(random.nextInt());
 
+        List<Integer> res = new ArrayList<Integer>();
+        List<Integer> wrongNumbers = new ArrayList<Integer>();
         for (Integer k : numbers) {
             try {
-                if(this.isSatisfy(k))
+                if (this.isSatisfy(k))
                     res.add(k);
-            } catch (Exception ex) {
+            } catch (NegativeNumberException ex) {
                 wrongNumbers.add(k);
             }
         }
+        return new CalcResult(res, wrongNumbers);
 
-        return new List[]{res, wrongNumbers};
     }
 
     /**
      * Проверка удовлетворяет ли число условию
      * @param k число для анализа
      * @return  true|false удовлетворяет|неудовлетворяет
-     * @throws Exception
+     * @throws NegativeNumberException
      */
-    private boolean isSatisfy(int k) throws Exception {
+    private boolean isSatisfy(int k) throws NegativeNumberException {
         if (k < 0) {
-            throw new Exception("Найдено отрицательное число");
+            throw new NegativeNumberException("Найдено отрицательное число");
         }
         Double q = Math.sqrt(k);
-
-        if (Math.pow(q.intValue(), 2) == k) {
-            return true;
-        }
-        return false;
+        return (Math.pow(q.intValue(), 2) == k);
     }
 
-
+    /* Ниже привел комментарий в телеграмм-чате от преподавателя курса, поэтому и добавил генерацию исключения и его перехват, возможно я неверно интерпритировал его слова
+     * "Исключение должно генерировать, если попало хотя бы одно отрицательное число, приложение не должно останавливаться и должно продолжать работу."
+     */
     public static void main(String[] args) throws Exception {
         Calc c = new Calc();
-        List[] res = c.calculate(10000);
-        if(res[0] != null && res[0].size() > 0) {
-            res[0].forEach(item -> System.out.println(item));
+        CalcResult res = c.calculate(10000);
+        if(res.getSatisfyDigits() != null && res.getSatisfyDigits().size() > 0) {
+            res.getSatisfyDigits().forEach(item -> System.out.println(item));
         } else {
             System.out.println("Чисел удовлетворяющих критерию не найдено");
         }
 
-        if(res[1] != null && res[1].size()  > 0) {
+        if(res.getNegativeNumbers() != null && res.getNegativeNumbers().size()  > 0) {
             System.out.println("Найденные отрицательные числа:");
-            res[1].forEach(item -> System.out.println(item));
+            res.getNegativeNumbers().forEach(item -> System.out.println(item));
+        }
+    }
+
+    /**
+     * Класс-исключение для отрицательных чисел
+     */
+    class NegativeNumberException extends Exception {
+        public NegativeNumberException(String message) {
+            super(message);
         }
     }
 }

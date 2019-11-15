@@ -17,7 +17,7 @@ public class Factorial implements Runnable {
     /**
      * Кэш расчитанных значений
      */
-    private static volatile Map<Integer,BigInteger> cache = new ConcurrentHashMap<Integer,BigInteger>();
+    private static final Map<Integer,BigInteger> cache = new ConcurrentHashMap<Integer,BigInteger>();
 
     /** Число для расчета факториала */
     private final int n;

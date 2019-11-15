@@ -69,12 +69,12 @@ public class Main {
     }
 
     /**
-     *
-     * @param wordsCount
-     * @param maxWordSize
-     * @param myDictionary
-     * @param probability   вероятность от 0 до 1
-     * @return
+     * Метод генерации предложения.
+     * @param wordsCount    Количество слов в предложении
+     * @param maxWordSize   Максимальная количество букв в слове
+     * @param myDictionary  Словарь слов
+     * @param probability   вероятность от 0 до 1, определяющий что будет использовано слово из словаря
+     * @return  Строка с сгнерерированным предложением.
      */
     private static String getGeneratedSentenceWithMyDictionary(int wordsCount, int maxWordSize, List<String> myDictionary, double probability) {
 
@@ -109,7 +109,7 @@ public class Main {
      * @param wordsCount        максимальное количество слов в предложении
      * @param maxWordSize       максимальная длинна слова предложении
      * @param maxSentencesCount    количество предложений в параграфе
-     * @return
+     * @return  Строка с сгенерированным параграфом
      */
     private static String getGeneratedParagraphWithMyDictionary(int wordsCount, int maxWordSize, int maxSentencesCount, List<String> dictionary, double probability) {
         StringBuilder builder = new StringBuilder();

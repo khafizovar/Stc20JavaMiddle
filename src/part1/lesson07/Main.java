@@ -58,8 +58,7 @@ public class Main {
     private static Map<Integer, BigInteger> factorialCalculateRunner(int [] numbers, boolean s) {
         List<Thread> threads = new ArrayList<>();
         for (int n : numbers) {
-            Factorial f = new Factorial(n, s);
-            Thread thread = new Thread(f);
+            Thread thread = new Thread(new Factorial(n, s));
             thread.start();
             threads.add(thread);
         }

@@ -2,6 +2,7 @@ package helpers;
 
 import part1.lession02.task03.Person;
 
+@Deprecated
 public class Helper {
 
     public static final String ARR_SIZE_EX_MESS = "Размер массива должен быть больше либо равен 1";

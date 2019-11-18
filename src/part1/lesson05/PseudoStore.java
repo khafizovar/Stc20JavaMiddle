@@ -12,7 +12,7 @@ import java.util.*;
  * Stc20JavaMiddle
  */
 public class PseudoStore {
-    private static List<Pet> store = new ArrayList<>();
+    private static List<Pet> store = new LinkedList<>();
 
     /**
      * Метод добавления нового Pet

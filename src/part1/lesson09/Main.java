@@ -46,7 +46,7 @@ public class Main {
 
     /**
      * Читаем строки из консоли
-     * @return
+     * @return  список строк введеных из консоли
      */
     private static List<String> consoleReader() {
         System.out.println("Ожидается ввод строк метода void doWork();");
@@ -72,7 +72,6 @@ public class Main {
      * @throws IOException
      */
     private static String writeToJava(List<String> additionalCode, String fileName) throws IOException {
-        System.out.println(System.getProperty("user.dir") + "\\src\\part1\\lesson09\\" + fileName);
         String fullFileName = System.getProperty("user.dir") + "\\src\\part1\\lesson09\\" + fileName;
         //Сперва считываем содержимое файла
         List<String> list = Files.readAllLines(new File(fullFileName).toPath(), Charset.defaultCharset());
@@ -81,7 +80,6 @@ public class Main {
         //Поиск сигнатуры doWork
         for (int i=1; i<list.size();i++) {
             if(list.get(i).indexOf("doWork()") > -1) {
-                System.out.println("finded");
                for(int j=additionalCode.size()-1; j>=0; j--) {
                    list.add(i + 1, additionalCode.get(j));
                }

@@ -9,7 +9,7 @@ package part1.lesson03.task03;
 public class Main {
     public static void main(String[] args) {
         Number[] data = {20,20,30,40,50,71,71,80,90,91, null};
-        ObjectBox mb = new MathBox(data);
+        ObjectBox<Number> mb = new MathBox(data);
 
         System.out.println(mb.toString());
         mb.addBox(new Double(123));
@@ -21,6 +21,7 @@ public class Main {
         System.out.println(((MathBox)mb).summator());
         ((MathBox) mb).splitter(15);
         System.out.println(mb.toString());
-        mb.addBox(new Object());
+        //Компилятор не даст отработать коду ниже, это пример ограничения на добавление Object
+        //mb.addBox(new Object());
     }
 }

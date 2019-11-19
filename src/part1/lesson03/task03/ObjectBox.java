@@ -6,14 +6,14 @@ import java.util.Set;
 /**
  * @author KhafizovAR
  */
-public class ObjectBox {
-    Set<Object> objectCollection = new HashSet<>();
+public class ObjectBox<T> {
+    Set<T> objectCollection = new HashSet<>();
 
     /**
      * Добавление объекта в коллекцию
      * @param obj  Добавляемый объект
      */
-    public void addBox(Object obj) {
+    public void addBox(T obj) {
         this.objectCollection.add(obj);
     }
 
@@ -21,7 +21,7 @@ public class ObjectBox {
      * Удаление объекта из коллекции
      * @param obj   удаляемый объект
      */
-    public void deleteObject(Object obj) {
+    public void deleteObject(T obj) {
         this.objectCollection.remove(obj);
     }
 

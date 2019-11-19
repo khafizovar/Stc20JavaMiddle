@@ -7,7 +7,7 @@ import java.util.Set;
 /**
  * @author KhafizovAR
  */
-public class MathBox extends ObjectBox {
+public class MathBox extends ObjectBox<Number> {
 
     public MathBox(Number[] number) {
         objectCollection = new HashSet<>(Arrays.asList(number));
@@ -31,7 +31,7 @@ public class MathBox extends ObjectBox {
      * @param num делитель
      */
     public void splitter(double num) {
-        Set<Object> rez = new HashSet<>();
+        Set<Number> rez = new HashSet<>();
         if(this.objectCollection.contains(null)) {
             rez.add(null);
             this.objectCollection.remove(null);
@@ -56,12 +56,8 @@ public class MathBox extends ObjectBox {
      * @param obj  Добавляемый объект
      */
     @Override
-    public void addBox(Object obj) {
-        if(obj instanceof Number) {
-            this.objectCollection.add((Number)obj);
-        } else {
-            throw new IllegalArgumentException("obj must be instance of Number");
-        }
+    public void addBox(Number obj) {
+        this.objectCollection.add(obj);
     }
 
     @Override

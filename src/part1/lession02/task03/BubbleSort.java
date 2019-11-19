@@ -1,7 +1,5 @@
 package part1.lession02.task03;
 
-import helpers.Helper;
-
 import java.util.*;
 
 /**
@@ -15,7 +13,7 @@ public class BubbleSort implements Sort {
      * @return отсортированный массив объектов Person @see {@link Person}
      */
     @Override
-    public Person[] sort(Person[] persons) throws Exception {
+    public Person[] sort(Person[] persons) {
         Person[] p = Arrays.copyOf(persons,persons.length);
         this.bubbleSort(p);
         return p;
@@ -25,10 +23,7 @@ public class BubbleSort implements Sort {
      * Сортировка пузырьком объектов {@link Person}
      * @param p Исходный массив для сортировки
      */
-    private void bubbleSort(Person[] p) throws Exception {
-        if(Helper.checkForDupleByAgeAndName(p))
-            throw new DupleByAgeAndNameFoundException("Найдены элементы с одинаковым именем и возрастом");
-
+    private void bubbleSort(Person[] p) {
         boolean needIteration = true;
         while (needIteration) {
             needIteration = false;

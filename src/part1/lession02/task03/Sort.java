@@ -10,5 +10,5 @@ public interface Sort {
      * @param persons  массив объектов Person @see {@link Person}
      * @return  отсортированный массив объектов Person @see {@link Person}
      */
-    Person[] sort(Person[] persons) throws Exception;
+    Person[] sort(Person[] persons);
 }

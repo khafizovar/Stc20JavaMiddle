@@ -47,13 +47,13 @@ public class PseudoStore {
      * @param name
      * @return
      */
-    public static Pet findByPetName(String name) {
+    public static Optional<Pet> findByPetName(String name) {
         for(Pet pet : store) {
             if(pet.getName().equals(name)) {
-                return pet;
+                return Optional.ofNullable(pet);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     /**

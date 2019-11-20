@@ -4,6 +4,7 @@ import helpers.RandomDataGenerator;
 import part1.lesson05.pojo.Person;
 import part1.lesson05.pojo.Pet;
 
+import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -44,10 +45,10 @@ public class Main {
         //Поиск ранее добавленного по имени
         System.out.println("-------------поиск по имени----------");
 
-        Pet p = PseudoStore.findByPetName("name 1");
+        Optional<Pet> p = PseudoStore.findByPetName("name 1");
         System.out.println(p);
         System.out.println("--------------апдейт по UUID--------");
-        PseudoStore.updatePetByUUID(p.getId(),
+        PseudoStore.updatePetByUUID(p.get().getId(),
                 RandomDataGenerator.getRandomString(6),
                 new Person(rnd.nextInt(100),
                         RandomDataGenerator.getRandomString(6),

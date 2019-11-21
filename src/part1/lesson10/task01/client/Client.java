@@ -69,9 +69,8 @@ public class Client extends Thread {
         public void run() {
             try {
                 while (!s.isClosed()) {
-                    String received = null;
-                    received = dis.readUTF();
-                    System.out.println(received);
+                    String s = dis.readUTF();
+                    System.out.println(s);
                 }
                 dis.close();
             } catch (IOException e) {

@@ -15,22 +15,24 @@ import java.util.StringTokenizer;
  */
 public class ClientInstance extends Thread {
 
-    private DateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
+    protected DateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
 
-    private final DataInputStream dis;
-    private final DataOutputStream dos;
-    private final Socket s;
+    protected final DataInputStream dis;
+    protected final DataOutputStream dos;
+    protected final Socket s;
+    protected final Server server;
 
-    private String clientName;
-    private boolean isRegistered = false;
+    protected String clientName;
+    protected boolean isRegistered = false;
 
-    public ClientInstance(Socket s, DataInputStream dis, DataOutputStream dos) {
+    public ClientInstance(Socket s, DataInputStream dis, DataOutputStream dos, Server server) {
         this.s = s;
         this.dis = dis;
         this.dos = dos;
+        this.server = server;
     }
 
-    private void registration() throws IOException {
+    protected void registration() throws IOException {
         String received;
         while(true) {
             this.dos.writeUTF("Для регистрации в чате наберите  #name Ваше_имя;");
@@ -39,8 +41,8 @@ public class ClientInstance extends Thread {
             if (st.nextToken().equals("name")) {
                 String newName = st.nextToken();
                 this.isRegistered = true;
-                for (ClientInstance mc : Server.getConnectedClients()) {
-                    if(mc.getName().equals(newName)) {
+                for (Object mc : this.server.getConnectedClients()) {
+                    if(((ClientInstance)mc).getName().equals(newName)) {
                         dos.writeUTF("Клиент с таким именеме уже существует!");
                         this.isRegistered = false;
                         break;
@@ -48,7 +50,7 @@ public class ClientInstance extends Thread {
                 }
                 if(this.isRegistered) {
                     this.clientName = newName;
-                    this.broadcast("#Поприветствуем " + this.clientName);
+                    this.sendMessage("Поприветствуем " + this.clientName);
                     this.dos.writeUTF("Вы зарегистрированы под именем:" + this.clientName);
                     return;
                 }
@@ -58,12 +60,13 @@ public class ClientInstance extends Thread {
     }
 
     /**
-     * Массовая рассылка
+     * Отправка сообщения, в данном случае массовая рассылка
      * @param message
      * @throws IOException
      */
-    private void broadcast(String message) throws IOException {
-        Server.broadCastMessage("[" + this.clientName + "] - [" + timeFormat.format(new Date()) + "]: " + message);
+    protected void sendMessage(String message) throws IOException {
+        System.out.println("old send message");
+        this.server.broadCastMessage("[" + this.clientName + "] - [" + timeFormat.format(new Date()) + "]: " + message);
     }
 
 
@@ -72,18 +75,18 @@ public class ClientInstance extends Thread {
         String received;
         try {
             this.registration();
-            dos.writeUTF("Вы в чате. моежете общаться (для выхода наберите 'quit')");
+            dos.writeUTF("Вы в чате. можете общаться (для выхода наберите 'quit')");
             while (true) {
                 received = dis.readUTF();
                 if (received.equalsIgnoreCase("quit")) {
                     System.out.println("Client " + this.s + " sends exit...");
-                    this.broadcast("#Выходит из чата");
+                    this.sendMessage("Выходит из чата");
                     this.s.close();
                     System.out.println("Connection closed");
-                    Server.clientClosed(this);
+                    this.server.clientClosed(this);
                     break;
                 }
-                this.broadcast(received);
+                this.sendMessage(received);
             }
         }  catch (IOException e) {
             e.printStackTrace();
@@ -96,5 +99,9 @@ public class ClientInstance extends Thread {
         } catch(IOException e){
             e.printStackTrace();
         }
+    }
+
+    public String getClientName() {
+        return clientName;
     }
 }

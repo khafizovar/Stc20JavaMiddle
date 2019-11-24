@@ -1,6 +1,7 @@
 package part1.lesson06.task02;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -32,6 +33,7 @@ public class FilesGenerator {
     private static final int MIN_SENTENCE_SIZE = 1;                     //Минимальная длинна предложения
 
     private static final String[] sentenceFinalizer = {".","!","?"};
+    private static List<String> wordsDictionary = new ArrayList<>();
 
     /**
      * генерация заданного количества файлов, эта сигнатура определена
@@ -42,6 +44,7 @@ public class FilesGenerator {
      * @param probability   Вероятность использования словв из массива words, от 0 до 100
      */
     static void getFiles(String path, int n, int size, String[] words, int probability) throws UnsupportedEncodingException {
+        wordsDictionary = Arrays.asList(words);
         System.out.println("Генерация файлов...");
         File file = new File(path);
         if(!file.isDirectory()) {
@@ -52,7 +55,7 @@ public class FilesGenerator {
             //Генерируем абзацы
             StringBuilder builder = new StringBuilder();
             do {
-                builder.append(getGeneratedParagraphWithMyDictionary(Arrays.asList(words), (double)probability / 100));
+                builder.append(getGeneratedParagraphWithMyDictionary((double)probability / 100));
                 //Пока размер не больше чем указано
             } while (builder.toString().getBytes("UTF-8").length < size);
 
@@ -68,11 +71,10 @@ public class FilesGenerator {
 
     /**
      * Метод генерации предложения.
-     * @param myDictionary  Словарь слов
      * @param probability   вероятность от 0 до 1, определяющий что будет использовано слово из словаря
      * @return  Строка с сгнерерированным предложением.
      */
-    private static String getGeneratedSentenceWithMyDictionary(List<String> myDictionary, double probability) {
+    private static String getGeneratedSentenceWithMyDictionary(double probability) {
 
         StringBuilder builder = new StringBuilder();
         //Первое слово
@@ -84,8 +86,8 @@ public class FilesGenerator {
         //Генерация слов
         for(int i=0; i<wordsCount; i++) {
             //Берем слово из словаря?
-            if(myDictionary.size() > 0 && getRandomDoubleBetweenRange(0, 1) < probability) {
-                builder.append(myDictionary.get(rnd.nextInt(myDictionary.size())));
+            if(wordsDictionary.size() > 0 && getRandomDoubleBetweenRange(0, 1) < probability) {
+                builder.append(wordsDictionary.get(rnd.nextInt(wordsDictionary.size())));
             } else { //Генерируем случайное слово
                 builder.append(getRandomString((int)getRandomDoubleBetweenRange(MIN_LETTERS_COUNT, rnd.nextInt(MAX_LETTERS_COUNT))));
             }
@@ -104,16 +106,15 @@ public class FilesGenerator {
 
     /**
      *
-     * @param dictionary Словарь слов
      * @param probability   вероятность использования слоа из слоаря в предложении
      * @return Строка с сгенерированным параграфом
      */
-    private static String getGeneratedParagraphWithMyDictionary(List<String> dictionary, double probability) {
+    private static String getGeneratedParagraphWithMyDictionary(double probability) {
         StringBuilder builder = new StringBuilder();
         //Случайное количество предложений в параграфе в пределах диапазона
         int maxSentencesCount = Math.max(rnd.nextInt(MAX_SENTENCES_COUNT), MIN_SENTENCE_SIZE);
         for(int i=0; i<maxSentencesCount; i++) {
-            builder.append(getGeneratedSentenceWithMyDictionary( dictionary, probability));
+            builder.append(getGeneratedSentenceWithMyDictionary(probability));
         }
         builder.append("\n\r");
         return builder.toString();

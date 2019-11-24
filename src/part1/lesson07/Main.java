@@ -33,7 +33,7 @@ public class Main {
         long beginTime = System.currentTimeMillis();
         Map<Integer, BigInteger> dataFirst  =  factorialCalculateRunner(numbers, false);
         System.out.println( "With Thread:" + (System.currentTimeMillis() - beginTime) + "мс");
-        Factorial.clearCache();
+        Cache.clearCache();
         beginTime = System.currentTimeMillis();
         Map<Integer, BigInteger> dataSecond = factorialCalculateRunner(numbers, true);
         System.out.println( "With Thread and search:" + (System.currentTimeMillis() - beginTime) + "мс");
@@ -70,7 +70,7 @@ public class Main {
                 e.printStackTrace();
             }
         }
-        return Factorial.getCache();
+        return Cache.getCache();
     }
 
     /**

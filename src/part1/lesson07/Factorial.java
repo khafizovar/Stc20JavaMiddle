@@ -1,12 +1,6 @@
 package part1.lesson07;
 
-import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
-
 import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Iterator;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Класс по расчету факториала для запуска в потоке
@@ -14,11 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @project Stc20JavaMiddle
  */
 public class Factorial implements Runnable {
-    /**
-     * Кэш расчитанных значений
-     */
-    private static final Map<Integer,BigInteger> cache = new ConcurrentHashMap<Integer,BigInteger>();
-
     /** Число для расчета факториала */
     private final int n;
     /** Признак какой из методов использовать - с поиском по кэшу ближайшего */
@@ -32,31 +21,23 @@ public class Factorial implements Runnable {
     BigInteger factorialWithCalculate() {
         if (n == 0)
             return BigInteger.ONE;
-        if (null != cache.get(n)) {
-            return cache.get(n);
+        if (Cache.getValueByKey(n).isPresent()) {
+            return Cache.getValueByKey(n).get();
         }
         BigInteger ret = BigInteger.ONE;
         if (n >= 1) {
             //Поиск наибольшего близкого
-            Iterator it = cache.entrySet().iterator();
-            int nearestDistance = Integer.MAX_VALUE;
-            int i = 1;
-            while (it.hasNext()) {
-                Map.Entry<Integer, BigInteger> pair = (Map.Entry)it.next();
-                if(pair.getKey() < n && n - pair.getKey() < nearestDistance) {
-                    nearestDistance = n - pair.getKey();
-                    i = pair.getKey();
-                }
-            }
-            if(nearestDistance != Integer.MAX_VALUE) {
-                ret = cache.get(i);
-            }
-            i++;    //Текущий факториал уже расчитан, считаем следующий
+            int i = Cache.findNearest(n);
+            if(Cache.getValueByKey(i).isPresent()) {
+                ret = Cache.getValueByKey(i).get();
+                i++;
+            } else
+                i = 1;
             for (; i <= n; i++) {
                 ret = ret.multiply(BigInteger.valueOf(i));
             }
         }
-        cache.put(n, ret);
+        Cache.put(n, ret);
         return ret;
     }
 
@@ -67,8 +48,8 @@ public class Factorial implements Runnable {
     BigInteger factorial() {
         if (n == 0)
             return BigInteger.ONE;
-        if (null != cache.get(n)) {
-            return cache.get(n);
+        if (Cache.getValueByKey(n).isPresent()) {
+            return Cache.getValueByKey(n).get();
         }
         BigInteger ret = BigInteger.ONE;
         if (n >= 1) {
@@ -76,17 +57,11 @@ public class Factorial implements Runnable {
                 ret = ret.multiply(BigInteger.valueOf(i));
             }
         }
-        cache.put(n, ret);
+        Cache.put(n, ret);
         return ret;
     }
 
-    static Map<Integer,BigInteger> getCache() {
-        return new HashMap<Integer,BigInteger>(cache);
-    }
 
-    static void clearCache() {
-        cache.clear();
-    }
 
     /**
      * Метод расчета факториала в лоб, без обращения и сохранений в кэше

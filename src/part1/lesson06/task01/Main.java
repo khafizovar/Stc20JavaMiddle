@@ -46,9 +46,6 @@ public class Main {
                     for (String substr : s.split("[\\p{Punct}\\s]+")) {
                         words.add(substr.toLowerCase());
                     }
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -34,7 +34,7 @@ public class Client extends Thread {
             clientReader.start();
             BroadCastClient brClient = new BroadCastClient();
             brClient.start();
-            while (true) {
+            while (s.isConnected()) {
                 String toSend = scn.nextLine();
                 dos.writeUTF(toSend);
 
@@ -58,7 +58,6 @@ public class Client extends Thread {
     class ClientReader extends Thread {
         private final DataInputStream dis;
         private final Socket s;
-        private boolean flag = true;
 
         public ClientReader(Socket s) throws IOException {
             this.dis = new DataInputStream(s.getInputStream());
@@ -68,7 +67,7 @@ public class Client extends Thread {
         @Override
         public void run() {
             try {
-                while (!s.isClosed()) {
+                while (s.isConnected()) {
                     String s = dis.readUTF();
                     System.out.println(s);
                 }
@@ -93,7 +92,7 @@ public class Client extends Thread {
         @Override
         public void run() {
             try {
-                while (!stopFlag) {
+                while (true) {
                     DpReceive = new DatagramPacket(receive, receive.length);
                     ds.receive(DpReceive);
                     System.out.println("Broadcast message:" + new String(receive, StandardCharsets.UTF_8));
@@ -102,14 +101,6 @@ public class Client extends Thread {
             } catch(IOException e) {
                 e.printStackTrace();
             }
-        }
-
-        public boolean isStopFlag() {
-            return stopFlag;
-        }
-
-        public void setStopFlag(boolean stopFlag) {
-            this.stopFlag = stopFlag;
         }
     }
 

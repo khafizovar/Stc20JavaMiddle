@@ -25,10 +25,10 @@ public class ClientInstance extends Thread {
     protected String clientName;
     protected boolean isRegistered = false;
 
-    public ClientInstance(Socket s, DataInputStream dis, DataOutputStream dos, Server server) {
+    public ClientInstance(Socket s, Server server) throws IOException {
         this.s = s;
-        this.dis = dis;
-        this.dos = dos;
+        this.dis = new DataInputStream(s.getInputStream());
+        this.dos = new DataOutputStream(s.getOutputStream());
         this.server = server;
     }
 
@@ -76,7 +76,7 @@ public class ClientInstance extends Thread {
         try {
             this.registration();
             dos.writeUTF("Вы в чате. можете общаться (для выхода наберите 'quit')");
-            while (true) {
+            while (!Thread.currentThread().isInterrupted()) {
                 received = dis.readUTF();
                 if (received.equalsIgnoreCase("quit")) {
                     System.out.println("Client " + this.s + " sends exit...");

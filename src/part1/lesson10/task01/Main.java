@@ -19,7 +19,7 @@ import part1.lesson10.task01.server.Server;
  */
 public class Main {
     public static void main(String[] args) throws IOException {
-        Server<ClientInstance> s = new Server<ClientInstance>();
-        s.runServer(ClientInstance.class);
+        Server s = new Server();
+        s.runServer("first");
     }
 }

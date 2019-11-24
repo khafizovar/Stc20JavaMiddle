@@ -15,8 +15,8 @@ import java.util.StringTokenizer;
  */
 public class ClientInstanceModified extends part1.lesson10.task01.server.ClientInstance {
 
-    public ClientInstanceModified(Socket s, DataInputStream dis, DataOutputStream dos, Server serv) {
-        super(s, dis, dos, serv);
+    public ClientInstanceModified(Socket s, Server serv) throws IOException {
+        super(s, serv);
     }
 
     /**

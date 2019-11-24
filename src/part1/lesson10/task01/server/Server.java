@@ -1,26 +1,26 @@
 package part1.lesson10.task01.server;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import part1.lesson10.ClientInstancePseudoFabric;
+
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author KhafizovAR on 21.11.2019.
  * @project Stc20JavaMiddle
  */
-public class Server<T extends ClientInstance> {
+public class Server {
 
     public static final Integer SERVER_PORT = 4999;
     public static final Integer BROADCAST_PORT = 6226;
     public static final String INET_ADDR_NAME = "localhost";
 
     //Список клиентов
-    protected List<T> connectedClients = Collections.synchronizedList(new ArrayList<>());
+    protected List<Thread> connectedClients = Collections.synchronizedList(new ArrayList<>());
 
     public Server() {
         this.connectedClients = connectedClients;
@@ -30,7 +30,7 @@ public class Server<T extends ClientInstance> {
      * Метод запуска сервера
      * @throws IOException
      */
-    public void runServer(Class<T> typeParameterClass) throws IOException {
+    public void runServer(String clientVersion) throws IOException {
         System.out.println("Запуск сервера на порту: " + SERVER_PORT);
         ServerSocket ss  = new ServerSocket(SERVER_PORT);
         while(true) {
@@ -38,11 +38,12 @@ public class Server<T extends ClientInstance> {
             try {
                 s = ss.accept();
                 System.out.println("Новый клиент : " + s + " \n.Создание потока для нового клиента.");
-                //T t = (T) ClientInstance.getInstance(s, new DataInputStream(s.getInputStream()), new DataOutputStream(s.getOutputStream()), this);
-                Constructor<?> ctor = typeParameterClass.getConstructor(s.getClass(),DataInputStream.class, DataOutputStream.class, Server.class);
-                T t = (T) ctor.newInstance(new Object[] { s, new DataInputStream(s.getInputStream()), new DataOutputStream(s.getOutputStream()), this });
-                this.connectedClients.add(t);
-                t.start();
+                Optional<Thread> t = ClientInstancePseudoFabric.getClientThread(clientVersion, s, this);
+                if(t.isPresent()) {
+                    Thread thr = t.get();
+                    this.connectedClients.add(thr);
+                    thr.start();
+                }
             } catch (Exception e){
                 s.close();
                 e.printStackTrace();
@@ -72,8 +73,8 @@ public class Server<T extends ClientInstance> {
      * Получение списка подключенных клиентов
      * @return
      */
-    public synchronized List<T> getConnectedClients() {
-        return new ArrayList<T>(connectedClients);
+    public synchronized List<Thread> getConnectedClients() {
+        return new ArrayList<>(connectedClients);
     }
 
     /**
@@ -81,7 +82,7 @@ public class Server<T extends ClientInstance> {
      * @param ci  Клиент
      * @return
      */
-    public boolean clientClosed(T ci) {
+    public boolean clientClosed(Thread ci) {
         return connectedClients.remove(ci);
     }
 }

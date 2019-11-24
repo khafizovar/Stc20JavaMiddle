@@ -17,7 +17,7 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        Server<ClientInstanceModified> server = new Server<ClientInstanceModified>();
-        server.runServer(ClientInstanceModified.class);
+        Server server = new Server();
+        server.runServer("second");
     }
 }

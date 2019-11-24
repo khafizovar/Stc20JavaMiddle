@@ -26,9 +26,10 @@ public class Main {
          * @param outputFileName    наименование/путь результирующего файла со списком найденных слов
          */
         public static void run(String fileName, String outputFileName) {
-            List<String> words = readFile(fileName);
-            Collections.sort(words);
-            writeToFile(words, outputFileName);
+            Set<String> words = readFile(fileName);
+            List<String> list = new ArrayList<String>(words);
+            Collections.sort(list);
+            writeToFile(list, outputFileName);
         }
 
         /**
@@ -36,16 +37,14 @@ public class Main {
          * @param fileName  наименование файла
          * @return
          */
-        private static List<String> readFile(String fileName) {
-            List<String> words = new ArrayList<>();
+        private static Set<String> readFile(String fileName) {
+            Set<String> words = new HashSet<>();
             try(FileReader fr = new FileReader(fileName)) {
                 BufferedReader br = new BufferedReader(fr);
                 String s;
                 while ((s = br.readLine()) != null)
                     for (String substr : s.split("[\\p{Punct}\\s]+")) {
-                        if(!words.contains(substr.toLowerCase())) {
-                            words.add(substr.toLowerCase());
-                        }
+                        words.add(substr.toLowerCase());
                     }
 
             } catch (FileNotFoundException e) {

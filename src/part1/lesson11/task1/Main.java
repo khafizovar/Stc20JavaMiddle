@@ -80,7 +80,7 @@ public class Main {
                 }
                 return result;
             };
-            for (int n : numbers) {
+            for (int n : nums) {
                 res.put(n, nf.func(n));
             }
             return res;

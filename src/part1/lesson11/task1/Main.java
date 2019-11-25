@@ -91,12 +91,15 @@ public class Main {
         Map<Integer, BigInteger> dataThird =  nma.run(numbers, null);
         System.out.println( "Without Thread:" + (System.currentTimeMillis() - beginTime) + "мс");
 
-        //ДЗ-11 Ну и проверим, на предмет расхождений
-        dataFirst.forEach((integer, bigInteger) -> {
-            if(dataThird.get(integer) == null || !dataThird.get(integer).equals(bigInteger)) {
-                System.out.println("Расхождение результата!!");
-            }
-        });
-
+        //ДЗ-11 Проверка на предмет расхождений
+        if(dataFirst.entrySet()
+                .stream()
+                .filter(k -> (
+                        (dataThird.get(k.getKey()) == null || !dataThird.get(k.getKey()).equals(k.getValue()))))
+                .toArray().length == 0) {
+            System.out.println("Расхождений не найдено");
+        } else {
+            System.out.println("Расхождение результата!!");
+        }
     };
 }

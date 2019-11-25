@@ -92,14 +92,13 @@ public class Main {
         System.out.println( "Without Thread:" + (System.currentTimeMillis() - beginTime) + "мс");
 
         //ДЗ-11 Проверка на предмет расхождений
-        if(dataFirst.entrySet()
+        long diffCount = dataFirst.entrySet()
                 .stream()
-                .filter(k -> (
-                        (dataThird.get(k.getKey()) == null || !dataThird.get(k.getKey()).equals(k.getValue()))))
-                .toArray().length == 0) {
-            System.out.println("Расхождений не найдено");
-        } else {
+                .filter(k -> ((dataThird.get(k.getKey()) == null || !dataThird.get(k.getKey()).equals(k.getValue())))).count();
+        if(diffCount > 0) {
             System.out.println("Расхождение результата!!");
+        } else {
+            System.out.println("Расхождений не найдено");
         }
     };
 }

@@ -39,8 +39,9 @@ public class Main {
          */
         private static Set<String> readFile(String fileName) {
             Set<String> words = new HashSet<>();
-            try(FileReader fr = new FileReader(fileName)) {
-                BufferedReader br = new BufferedReader(fr);
+            try(FileReader fr = new FileReader(fileName);
+                BufferedReader br = new BufferedReader(fr)) {
+
                 String s;
                 while ((s = br.readLine()) != null)
                     for (String substr : s.split("[\\p{Punct}\\s]+")) {

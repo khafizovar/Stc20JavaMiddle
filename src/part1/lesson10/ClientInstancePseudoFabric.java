@@ -22,7 +22,7 @@ public class ClientInstancePseudoFabric {
      * @return  новый экземпляр клиента
      * @throws IOException
      */
-    public static Optional<Thread> getClientThread(String version, Socket socket, Server server) throws IOException {
+    public static Optional<ClientInstance> getClientThread(String version, Socket socket, Server server) throws IOException {
         switch(version) {
             case "first": {
                 return Optional.of(new ClientInstance(socket, server));

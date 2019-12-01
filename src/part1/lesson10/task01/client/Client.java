@@ -45,6 +45,7 @@ public class Client extends Thread {
                     break;
                 }
             }
+            brClient.close();
             scn.close();
             dos.close();
         } catch(Exception e) {
@@ -92,7 +93,7 @@ public class Client extends Thread {
         @Override
         public void run() {
             try {
-                while (true) {
+                while (stopFlag) {
                     DpReceive = new DatagramPacket(receive, receive.length);
                     ds.receive(DpReceive);
                     System.out.println("Broadcast message:" + new String(receive, StandardCharsets.UTF_8));
@@ -101,6 +102,10 @@ public class Client extends Thread {
             } catch(IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        public void close() {
+            this.stopFlag = true;
         }
     }
 

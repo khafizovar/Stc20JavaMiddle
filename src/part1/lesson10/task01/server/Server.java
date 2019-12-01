@@ -23,7 +23,7 @@ public class Server {
     protected List<Thread> connectedClients = Collections.synchronizedList(new ArrayList<>());
 
     public Server() {
-        this.connectedClients = connectedClients;
+
     }
 
     /**
@@ -38,7 +38,7 @@ public class Server {
             try {
                 s = ss.accept();
                 System.out.println("Новый клиент : " + s + " \n.Создание потока для нового клиента.");
-                Optional<Thread> t = ClientInstancePseudoFabric.getClientThread(clientVersion, s, this);
+                Optional<ClientInstance> t = ClientInstancePseudoFabric.getClientThread(clientVersion, s, this);
                 if(t.isPresent()) {
                     Thread thr = t.get();
                     this.connectedClients.add(thr);

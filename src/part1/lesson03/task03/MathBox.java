@@ -1,8 +1,6 @@
 package part1.lesson03.task03;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author KhafizovAR
@@ -10,7 +8,7 @@ import java.util.Set;
 public class MathBox extends ObjectBox<Number> {
 
     public MathBox(Number[] number) {
-        objectCollection = new HashSet<Number>(Arrays.asList(number));
+        objectCollection = new LinkedList<>(Arrays.asList(number));
     }
 
     /**
@@ -31,7 +29,7 @@ public class MathBox extends ObjectBox<Number> {
      * @param num делитель
      */
     public void splitter(double num) {
-        Set<Number> rez = new HashSet<>();
+        List<Number> rez = new LinkedList<>();
         if(this.objectCollection.contains(null)) {
             rez.add(null);
             this.objectCollection.remove(null);
@@ -49,6 +47,15 @@ public class MathBox extends ObjectBox<Number> {
      */
     public boolean removeInt(Integer num) {
         return this.objectCollection.remove(num);
+    }
+
+    @Override
+    public void addBox(Number obj) {
+        if(!this.objectCollection.contains(obj)) {
+            this.objectCollection.add(obj);
+        } else {
+            System.out.println("Коллекция уже содержит данный элемент");
+        }
     }
 
 }

@@ -1,13 +1,15 @@
 package part1.lesson03.task03;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 /**
  * @author KhafizovAR
  */
 public class ObjectBox<T> {
-    Set<T> objectCollection = new HashSet<>();
+    protected List<T> objectCollection = new LinkedList<>();
 
     /**
      * Добавление объекта в коллекцию

@@ -14,7 +14,7 @@ import java.util.*;
  * @author KhafizovAR
  */
 public class MathBox {
-    Set<Number> numbers;
+    private Set<Number> numbers;
 
     public MathBox(Number[] number) {
         numbers = new HashSet<Number>(Arrays.asList(number));
@@ -59,33 +59,7 @@ public class MathBox {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((numbers == null) ? 0 : numbers.hashCode());
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "MathBox [numbers=" + numbers + "]";
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        MathBox other = (MathBox) obj;
-        if (numbers == null) {
-            if (other.numbers != null)
-                return false;
-        } else if (!numbers.equals(other.numbers))
-            return false;
-        return true;
-    }
-
 }

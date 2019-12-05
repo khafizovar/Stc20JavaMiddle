@@ -5,16 +5,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class User {
-    private Integer id;
-    private String name;
-    private LocalDate birthday;
-    private String loginId;
-    private String city;
-    private String email;
-    private String description;
+    private final Integer id;
+    private final String name;
+    private final LocalDate birthday;
+    private final String loginId;
+    private final String city;
+    private final String email;
+    private final String description;
 
-    public User() {
-    }
 
     public User(Integer id, String name, LocalDate birthday, String loginId, String city, String email, String description) {
         this.id = id;
@@ -30,56 +28,28 @@ public class User {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
-    }
-
     public String getLoginId() {
         return loginId;
-    }
-
-    public void setLoginId(String loginId) {
-        this.loginId = loginId;
     }
 
     public String getCity() {
         return city;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     @Override

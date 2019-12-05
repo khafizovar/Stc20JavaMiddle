@@ -1,6 +1,5 @@
 package part2.lesson15.db;
 
-import part2.lesson15.db.ConnectionManager.ConnectionManager;
 import part2.lesson15.db.ConnectionManager.ConnectionManagerJdbcImpl;
 import part2.lesson15.db.dao.GenericDao;
 import part2.lesson15.db.dao.RoleDao;

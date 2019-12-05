@@ -1,9 +1,9 @@
 package part2.lesson15.db.pojo;
 
 public class Role {
-    private Integer id;
-    private Roles name;
-    private String description;
+    private final Integer id;
+    private final Roles name;
+    private final String description;
 
     public enum Roles {
         ADMINISTRATION,
@@ -11,8 +11,6 @@ public class Role {
         BILLING
     }
 
-    public Role() {
-    }
 
     public Role(Integer id, Roles name, String description) {
         this.id = id;
@@ -24,24 +22,12 @@ public class Role {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public Roles getName() {
         return name;
     }
 
-    public void setName(Roles name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     @Override

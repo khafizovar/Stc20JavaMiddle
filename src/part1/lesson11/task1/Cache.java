@@ -56,16 +56,15 @@ public class Cache {
      * @return
      */
     static Integer findNearest (Integer key) {
-        Iterator it = cache.entrySet().iterator();
         int nearestDistance = Integer.MAX_VALUE;
         int i = 1;
-        while (it.hasNext()) {
-            Map.Entry<Integer, BigInteger> pair = (Map.Entry)it.next();
+        for (Map.Entry<Integer, BigInteger> pair : cache.entrySet()) {
             if(pair.getKey() < key && key - pair.getKey() < nearestDistance) {
                 nearestDistance = key - pair.getKey();
                 i = pair.getKey();
             }
         }
+
         if(nearestDistance != Integer.MAX_VALUE) {
             return  i;
         }

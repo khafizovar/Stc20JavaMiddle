@@ -1,14 +1,15 @@
 package part1.lesson11.task1;
 
+import com.sun.org.apache.xpath.internal.functions.Function2Args;
 import part1.lesson11.NumAndBool;
-import part1.lesson11.NumericFunc;
-import part1.lesson11.TwoArgNumericFunc;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * Дан массив случайных чисел. Написать программу для вычисления факториалов всех элементов массива. Использовать пул потоков для решения задачи.
@@ -35,10 +36,10 @@ public class Main {
         int [] numbers = new int [ARR_SIZE];
         System.out.println("Генерация массива, размер:" + ARR_SIZE);
         //ДЗ-11, функциональный интерфейс
-        TwoArgNumericFunc rndNumber = (min, max) -> (int) ((Math.random()*((max-min)+1))+min);
+        BiFunction<Integer, Integer, Integer> rndNumber = (min, max) -> ((Double)(((Math.random()*(max-min)+1))+min)).intValue();
 
         for (int i=0; i<ARR_SIZE; i++) {
-            numbers[i] = rndNumber.getRandomBetween(MIN_VAL, MAX_VAL);
+            numbers[i] = rndNumber.apply(MIN_VAL, MAX_VAL);
         }
 
         //ДЗ-11
@@ -73,7 +74,7 @@ public class Main {
         nma = (int [] nums, Boolean bool) -> {
             Map<Integer, BigInteger> res = new HashMap<>();
             //ДЗ-11
-            NumericFunc nf = (int n) -> {
+            Function<Integer, BigInteger> nf = (Integer n) -> {
                 BigInteger result = BigInteger.valueOf(1);
                 for (int i = 1; i <=n; i++){
                     result = result.multiply(BigInteger.valueOf(i));
@@ -81,7 +82,7 @@ public class Main {
                 return result;
             };
             for (int n : nums) {
-                res.put(n, nf.func(n));
+                res.put(n, nf.apply(n));
             }
             return res;
         };

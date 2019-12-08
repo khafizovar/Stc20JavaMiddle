@@ -1,8 +1,7 @@
 package part1.lesson11.task1;
 
-import part1.lesson11.NumericFunc;
-
 import java.math.BigInteger;
+import java.util.function.Function;
 
 /**
  * Класс по расчету факториала для запуска в потоке
@@ -15,7 +14,7 @@ public class Factorial implements Runnable {
     /** Признак какой из методов использовать - с поиском по кэшу ближайшего */
     private final boolean searchInCache;
     //ДЗ-11
-    private NumericFunc nfWithCache = (n) -> {
+    private Function<Integer, BigInteger> nfWithCache = (n) -> {
         if (n == 0)
             return BigInteger.ONE;
         if (Cache.getValueByKey(n).isPresent()) {
@@ -38,7 +37,7 @@ public class Factorial implements Runnable {
         return ret;
     };
     //ДЗ-11
-    private NumericFunc nfWithoutCache = (n) -> {
+    private Function<Integer, BigInteger> nfWithoutCache = (n) -> {
         if (n == 0)
             return BigInteger.ONE;
         if (Cache.getValueByKey(n).isPresent()) {
@@ -60,7 +59,7 @@ public class Factorial implements Runnable {
      * @return
      */
     BigInteger factorialWithCalculate() {
-        return nfWithCache.func(n);
+        return nfWithCache.apply(n);
     }
 
     /**
@@ -68,7 +67,7 @@ public class Factorial implements Runnable {
      * @return
      */
     BigInteger factorial() {
-        return nfWithoutCache.func(n);
+        return nfWithoutCache.apply(n);
     }
 
     @Override

@@ -1,3 +1,5 @@
+CREATE SEQUENCE id_seq;
+
 create table "USER"
 (
     id          numeric default nextval('id_seq'::regclass) not null

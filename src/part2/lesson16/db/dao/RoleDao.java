@@ -27,6 +27,7 @@ public class RoleDao implements GenericDao<Role> {
 
     @Override
     public boolean add(Role role) {
+        logger.info("addM:" + role.toString());
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "INSERT INTO  public.\"ROLE\" values (DEFAULT, ?, ?)");
@@ -42,6 +43,7 @@ public class RoleDao implements GenericDao<Role> {
 
     @Override
     public Role getById(Integer id) {
+        logger.info("getById:" + id);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT * FROM  public.\"ROLE\" WHERE id = ?");
@@ -62,6 +64,7 @@ public class RoleDao implements GenericDao<Role> {
 
     @Override
     public boolean updateById(Role role) {
+        logger.info("updateById:" + role);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "UPDATE  public.\"ROLE\" SET name=?, description=?" +
@@ -78,6 +81,7 @@ public class RoleDao implements GenericDao<Role> {
 
     @Override
     public boolean deleteById(Integer id) {
+        logger.info("deleteById:" + id);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "DELETE FROM  public.\"ROLE\" WHERE id=?");
@@ -92,6 +96,7 @@ public class RoleDao implements GenericDao<Role> {
 
     @Override
     public List<Role> getAll() {
+        logger.info("getAll");
         List<Role> roles = new ArrayList<>();
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -112,6 +117,7 @@ public class RoleDao implements GenericDao<Role> {
 
     @Override
     public boolean addAll(List<Role> objs) {
+        logger.info("addAll:" + objs);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "INSERT INTO  public.\"ROLE\" values (DEFAULT, ?, ?)");
@@ -130,6 +136,7 @@ public class RoleDao implements GenericDao<Role> {
 
     @Override
     public boolean truncate() {
+        logger.info("truncate");
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "truncate table  public.\"ROLE\" cascade ");
@@ -143,6 +150,7 @@ public class RoleDao implements GenericDao<Role> {
 
     @Override
     public boolean addM(Role role, Connection conn) {
+        logger.info("addM:" + role);
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(
                     "INSERT INTO  public.\"ROLE\" values (DEFAULT, ?, ?)");

@@ -27,6 +27,7 @@ public class UserRoleDao implements GenericDao<UserRole> {
 
     @Override
     public boolean add(UserRole ur) {
+        logger.info("add:" + ur);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "INSERT INTO  public.\"USER_ROLE\" values (DEFAULT, ?, ?)");
@@ -42,6 +43,7 @@ public class UserRoleDao implements GenericDao<UserRole> {
 
     @Override
     public UserRole getById(Integer id) {
+        logger.info("getById:" + id);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT * FROM  public.\"USER_ROLE\" WHERE id = ?");
@@ -62,6 +64,7 @@ public class UserRoleDao implements GenericDao<UserRole> {
 
     @Override
     public boolean updateById(UserRole ur) {
+        logger.info("updateById:" + ur);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "UPDATE  public.\"USER_ROLE\" SET user_id=?, role_id=?" +
@@ -78,6 +81,7 @@ public class UserRoleDao implements GenericDao<UserRole> {
 
     @Override
     public boolean deleteById(Integer id) {
+        logger.info("deleteById:" + id);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "DELETE FROM  public.\"USER_ROLE\" WHERE id=?");
@@ -92,6 +96,7 @@ public class UserRoleDao implements GenericDao<UserRole> {
 
     @Override
     public List<UserRole> getAll() {
+        logger.info("getAll");
         List<UserRole> urs = new ArrayList<>();
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -112,6 +117,7 @@ public class UserRoleDao implements GenericDao<UserRole> {
 
     @Override
     public boolean truncate() {
+        logger.info("truncate");
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "truncate table  public.\"USER_ROLE\"");
@@ -130,6 +136,7 @@ public class UserRoleDao implements GenericDao<UserRole> {
 
     @Override
     public boolean addM(UserRole ur, Connection conn) {
+        logger.info("addM:" + ur);
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(
                     "INSERT INTO  public.\"USER_ROLE\" values (DEFAULT, ?, ?)");

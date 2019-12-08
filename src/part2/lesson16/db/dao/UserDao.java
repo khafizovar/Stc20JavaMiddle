@@ -28,6 +28,7 @@ public class UserDao implements GenericDao<User> {
 
     @Override
     public boolean add(User user) {
+        logger.info("Add User" + user.toString());
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "INSERT INTO  public.\"USER\" values (DEFAULT, ?, ?, ?,?,?,?)");
@@ -47,6 +48,7 @@ public class UserDao implements GenericDao<User> {
 
     @Override
     public User getById(Integer id) {
+        logger.info("getById User" + id);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT * FROM public.\"USER\" WHERE id = ?");
@@ -71,6 +73,7 @@ public class UserDao implements GenericDao<User> {
 
     @Override
     public boolean updateById(User user) {
+        logger.info("updateById User" + user.toString());
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "UPDATE  public.\"USER\" SET name=?, birthday=?, login_ID=?, city=?, email=?, description=? " +
@@ -91,6 +94,7 @@ public class UserDao implements GenericDao<User> {
 
     @Override
     public boolean deleteById(Integer id) {
+        logger.info("deleteById User" + id);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "DELETE FROM  public.\"USER\" WHERE id=?");
@@ -105,6 +109,7 @@ public class UserDao implements GenericDao<User> {
 
     @Override
     public List<User> getAll() {
+        logger.info("getAll");
         List<User> users = new ArrayList<>();
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -129,6 +134,7 @@ public class UserDao implements GenericDao<User> {
 
     @Override
     public boolean addAll(List<User> objs) {
+        logger.info("addAll" + objs);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "INSERT INTO  public.\"USER\" values (DEFAULT, ?, ?, ?,?,?,?)");
@@ -151,6 +157,7 @@ public class UserDao implements GenericDao<User> {
 
     @Override
     public boolean truncate() {
+        logger.info("truncate");
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "truncate table  public.\"USER\" cascade");
@@ -169,6 +176,7 @@ public class UserDao implements GenericDao<User> {
      * @return
      */
     public User selectByNameAndLoginId(String name, String loginId) {
+        logger.info("selectByNameAndLoginId:" + name + ";"+ loginId);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT * FROM public.\"USER\" WHERE name = ? and \"login_ID\" = ?");
@@ -194,6 +202,7 @@ public class UserDao implements GenericDao<User> {
 
     @Override
     public boolean addM(User user, Connection conn) {
+        logger.info("addM:" + user.toString());
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(
                     "INSERT INTO  public.\"USER\" values (DEFAULT, ?, ?, ?,?,?,?)");

@@ -4,8 +4,6 @@ package part1.lesson10.task01;
 
 import java.io.IOException;
 
-import part1.lesson10.task01.client.Client;
-import part1.lesson10.task01.server.ClientInstance;
 import part1.lesson10.task01.server.Server;
 
 /**
@@ -20,6 +18,6 @@ import part1.lesson10.task01.server.Server;
 public class Main {
     public static void main(String[] args) throws IOException {
         Server s = new Server();
-        s.runServer("first");
+        s.runServer("default");
     }
 }

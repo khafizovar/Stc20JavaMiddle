@@ -82,7 +82,7 @@ public class Client extends Thread {
     class BroadCastClient extends Thread {
 
         private byte[] receive = new byte[65535];
-        private DatagramSocket ds= new DatagramSocket(Server.BROADCAST_PORT);
+        private DatagramSocket ds = new DatagramSocket(Server.BROADCAST_PORT);
         private DatagramPacket DpReceive = null;
         private boolean stopFlag = false;
 
@@ -93,12 +93,13 @@ public class Client extends Thread {
         @Override
         public void run() {
             try {
-                while (stopFlag) {
+                while (!stopFlag) {
                     DpReceive = new DatagramPacket(receive, receive.length);
                     ds.receive(DpReceive);
                     System.out.println("Broadcast message:" + new String(receive, StandardCharsets.UTF_8));
                     receive = new byte[65535];
                 }
+                ds.close();
             } catch(IOException e) {
                 e.printStackTrace();
             }

@@ -1,13 +1,10 @@
 package part1.lesson10.task01.server;
 
-import part1.lesson10.ClientInstancePseudoFabric;
-
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author KhafizovAR on 21.11.2019.
@@ -30,7 +27,7 @@ public class Server {
      * Метод запуска сервера
      * @throws IOException
      */
-    public void runServer(String clientVersion) throws IOException {
+    public void runServer(String sendSrategyName) throws IOException {
         System.out.println("Запуск сервера на порту: " + SERVER_PORT);
         ServerSocket ss  = new ServerSocket(SERVER_PORT);
         while(true) {
@@ -38,12 +35,10 @@ public class Server {
             try {
                 s = ss.accept();
                 System.out.println("Новый клиент : " + s + " \n.Создание потока для нового клиента.");
-                Optional<ClientInstance> t = ClientInstancePseudoFabric.getClientThread(clientVersion, s, this);
-                if(t.isPresent()) {
-                    Thread thr = t.get();
-                    this.connectedClients.add(thr);
-                    thr.start();
-                }
+                ClientInstance t = new ClientInstance(s, this, SenderFabric.getSenderInstance(sendSrategyName));//ClientInstancePseudoFabric.getClientThread(clientVersion, s, this);
+                Thread thr = t;
+                this.connectedClients.add(thr);
+                thr.start();
             } catch (Exception e){
                 s.close();
                 e.printStackTrace();

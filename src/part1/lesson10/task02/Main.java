@@ -3,7 +3,6 @@ package part1.lesson10.task02;
 
 
 import part1.lesson10.task01.server.Server;
-import part1.lesson10.task02.server.ClientInstanceModified;
 
 import java.io.IOException;
 
@@ -18,6 +17,6 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         Server server = new Server();
-        server.runServer("second");
+        server.runServer("withPm");
     }
 }

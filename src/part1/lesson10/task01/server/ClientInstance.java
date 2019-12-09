@@ -6,16 +6,15 @@ import java.io.IOException;
 import java.net.Socket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.StringTokenizer;
+
+
 
 /**
  * @author KhafizovAR on 21.11.2019.
  * @project Stc20JavaMiddle
  */
 public class ClientInstance extends Thread {
-
-    protected DateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
 
     protected final DataInputStream dis;
     protected final DataOutputStream dos;
@@ -24,12 +23,14 @@ public class ClientInstance extends Thread {
 
     protected String clientName;
     protected boolean isRegistered = false;
+    protected Send sender;
 
-    public ClientInstance(Socket s, Server server) throws IOException {
+    public ClientInstance(Socket s, Server server, Send sender) throws IOException {
         this.s = s;
         this.dis = new DataInputStream(s.getInputStream());
         this.dos = new DataOutputStream(s.getOutputStream());
         this.server = server;
+        this.sender = sender;
     }
 
     protected void registration() throws IOException {
@@ -65,8 +66,7 @@ public class ClientInstance extends Thread {
      * @throws IOException
      */
     protected void sendMessage(String message) throws IOException {
-        System.out.println("old send message");
-        this.server.broadCastMessage("[" + this.clientName + "] - [" + timeFormat.format(new Date()) + "]: " + message);
+        this.sender.sendMessage(message,server, this);
     }
 
 

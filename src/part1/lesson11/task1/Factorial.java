@@ -11,70 +11,20 @@ import java.util.function.Function;
 public class Factorial implements Runnable {
     /** Число для расчета факториала */
     private final int n;
-    /** Признак какой из методов использовать - с поиском по кэшу ближайшего */
-    private final boolean searchInCache;
-    //ДЗ-11
-    private Function<Integer, BigInteger> nfWithCache = (n) -> {
-        if (n == 0)
-            return BigInteger.ONE;
-        if (Cache.getValueByKey(n).isPresent()) {
-            return Cache.getValueByKey(n).get();
-        }
-        BigInteger ret = BigInteger.ONE;
-        if (n >= 1) {
-            //Поиск наибольшего близкого
-            int i = Cache.findNearest(n);
-            if(Cache.getValueByKey(i).isPresent()) {
-                ret = Cache.getValueByKey(i).get();
-                i++;
-            } else
-                i = 1;
-            for (; i <= n; i++) {
-                ret = ret.multiply(BigInteger.valueOf(i));
-            }
-        }
-        Cache.put(n, ret);
-        return ret;
-    };
-    //ДЗ-11
-    private Function<Integer, BigInteger> nfWithoutCache = (n) -> {
-        if (n == 0)
-            return BigInteger.ONE;
-        if (Cache.getValueByKey(n).isPresent()) {
-            return Cache.getValueByKey(n).get();
-        }
-        BigInteger ret = BigInteger.ONE;
-        if (n >= 1) {
-            for (int i = 1; i <= n; i++) {
-                ret = ret.multiply(BigInteger.valueOf(i));
-            }
-        }
-        Cache.put(n, ret);
-        return ret;
-    };
+    private final Function<Integer, BigInteger> fn;
 
-    Factorial(int n, boolean searchInCache) { this.n = n; this.searchInCache = searchInCache; }
-    /**
-     * Метод расчета факториала с кэшированием ранее расчитанных + участие в расчете.
-     * @return
-     */
-    BigInteger factorialWithCalculate() {
-        return nfWithCache.apply(n);
-    }
+    Factorial(int n, Function<Integer, BigInteger> fn) { this.n = n; this.fn = fn;}
 
     /**
      * Метод расчета факториала с учетом ранее расчитанных, но без участия в расчете
      * @return
      */
-    BigInteger factorial() {
-        return nfWithoutCache.apply(n);
+    private BigInteger factorial() {
+        return fn.apply(n);
     }
 
     @Override
     public void run() {
-        if(!searchInCache)
-            this.factorial();
-        else
-            this.factorialWithCalculate();
+           this.factorial();
     }
 }

@@ -32,8 +32,49 @@ public class Main {
     private static final int MAX_VAL = 3000;
     private static final int MIN_VAL = 1000;
 
+
     public static void main(String[] args) {
         int [] numbers = new int [ARR_SIZE];
+
+        Function<Integer, BigInteger> nfWithCache = (n) -> {
+            if (n == 0)
+                return BigInteger.ONE;
+            if (Cache.getValueByKey(n).isPresent()) {
+                return Cache.getValueByKey(n).get();
+            }
+            BigInteger ret = BigInteger.ONE;
+            if (n >= 1) {
+                //Поиск наибольшего близкого
+                int i = Cache.findNearest(n);
+                if(Cache.getValueByKey(i).isPresent()) {
+                    ret = Cache.getValueByKey(i).get();
+                    i++;
+                } else
+                    i = 1;
+                for (; i <= n; i++) {
+                    ret = ret.multiply(BigInteger.valueOf(i));
+                }
+            }
+            Cache.put(n, ret);
+            return ret;
+        };
+        //ДЗ-11
+        Function<Integer, BigInteger> nfWithoutCache = (n) -> {
+            if (n == 0)
+                return BigInteger.ONE;
+            if (Cache.getValueByKey(n).isPresent()) {
+                return Cache.getValueByKey(n).get();
+            }
+            BigInteger ret = BigInteger.ONE;
+            if (n >= 1) {
+                for (int i = 1; i <= n; i++) {
+                    ret = ret.multiply(BigInteger.valueOf(i));
+                }
+            }
+            Cache.put(n, ret);
+            return ret;
+        };
+
         System.out.println("Генерация массива, размер:" + ARR_SIZE);
         //ДЗ-11, функциональный интерфейс
         BiFunction<Integer, Integer, Integer> rndNumber = (min, max) -> ((Double)(((Math.random()*(max-min)+1))+min)).intValue();
@@ -47,7 +88,8 @@ public class Main {
             List<Thread> threads = new ArrayList<>();
             for (int n : nums) {
                 //ДЗ-11
-                Thread thr = new Thread(() -> new Factorial(n, false));
+                Function<Integer, BigInteger> fn = (bool) ? nfWithoutCache : nfWithCache;
+                Thread thr = new Thread(() -> new Factorial(n, fn));
                 thr.start();
                 threads.add(thr);
             }

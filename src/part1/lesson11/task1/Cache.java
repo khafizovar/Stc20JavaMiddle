@@ -1,11 +1,9 @@
 package part1.lesson11.task1;
 
 import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * @author KhafizovR by 24.11.2019
@@ -56,18 +54,12 @@ public class Cache {
      * @return
      */
     static Integer findNearest (Integer key) {
-        int nearestDistance = Integer.MAX_VALUE;
-        int i = 1;
-        for (Map.Entry<Integer, BigInteger> pair : cache.entrySet()) {
-            if(pair.getKey() < key && key - pair.getKey() < nearestDistance) {
-                nearestDistance = key - pair.getKey();
-                i = pair.getKey();
-            }
-        }
-
-        if(nearestDistance != Integer.MAX_VALUE) {
-            return  i;
-        }
-        return -1;
+        int i = -1;
+        //Поиск найболее близкого объекта снизу
+        i = cache.entrySet().stream()
+                .filter(pair-> pair.getKey() < key)
+                .max(Comparator.comparingInt(Map.Entry::getKey))
+                .get().getKey();
+        return i;
     }
 }

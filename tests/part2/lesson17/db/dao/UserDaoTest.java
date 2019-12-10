@@ -140,7 +140,7 @@ class UserDaoTest {
                 "Syktyvkar",
                 "_q2@notreal.ru",
                 "_q2 description"));
-        assertNotNull(userDao.addAll(addUsers));
+        assertTrue(userDao.addAll(addUsers));
     }
 
     @Test

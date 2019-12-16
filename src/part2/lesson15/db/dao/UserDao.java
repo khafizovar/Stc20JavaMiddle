@@ -38,7 +38,7 @@ public class UserDao implements GenericDao<User> {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            Optional.of(new User(resultSet.getInt(1),
+            return Optional.of(new User(resultSet.getInt(1),
                     user.getName(),
                     user.getBirthday(),
                     user.getLoginId(),
@@ -47,7 +47,6 @@ public class UserDao implements GenericDao<User> {
                     user.getDescription()));
         } catch (SQLException e) {
             e.printStackTrace();
-            return Optional.empty();
         }
         return Optional.empty();
     }

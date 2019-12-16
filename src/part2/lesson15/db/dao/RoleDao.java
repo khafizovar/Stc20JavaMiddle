@@ -32,12 +32,11 @@ public class RoleDao implements GenericDao<Role> {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            Optional.of(new Role(resultSet.getInt(1),
+            return Optional.of(new Role(resultSet.getInt(1),
                     role.getName(),
                     role.getDescription()));
         } catch (SQLException e) {
             e.printStackTrace();
-            return Optional.empty();
         }
         return Optional.empty();
     }

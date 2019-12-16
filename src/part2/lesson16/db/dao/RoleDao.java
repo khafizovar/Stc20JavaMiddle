@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author KhafizovAR on 03.12.2019.
@@ -26,24 +27,28 @@ public class RoleDao implements GenericDao<Role> {
             ConnectionManagerJdbcImpl.getInstance();
 
     @Override
-    public boolean add(Role role) {
-        logger.info("addM:" + role.toString());
+    public Optional<Role> add(Role role) {
+        logger.info("add(Role):" + role.toString());
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO  public.\"ROLE\" values (DEFAULT, ?, ?)");
+                    "INSERT INTO  public.\"ROLE\" values (DEFAULT, ?, ?) RETURNING id");
             preparedStatement.setString(1, role.getName().name());
             preparedStatement.setString(2, role.getDescription());
-            System.out.println(preparedStatement.executeUpdate());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return Optional.of(new Role(resultSet.getInt(1),
+                    role.getName(),
+                    role.getDescription()));
         } catch (SQLException e) {
-            logger.error(role.toString(), e);
-            return false;
+            logger.error("Exception in add(Role):" + role.toString(), e);
         }
-        return true;
+        return Optional.empty();
     }
 
     @Override
-    public Role getById(Integer id) {
-        logger.info("getById:" + id);
+    public Optional<Role> getById(Integer id) {
+        logger.info("getById(Role):" + id);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT * FROM  public.\"ROLE\" WHERE id = ?");
@@ -54,17 +59,17 @@ public class RoleDao implements GenericDao<Role> {
                         resultSet.getInt(1),
                         Role.Roles.valueOf(resultSet.getString(2)),
                         resultSet.getString(3));
-                return role;
+                return Optional.of(role);
             }
         } catch (SQLException e) {
-            logger.error("Id:" + id, e);
+            logger.error("Exception in getById(Role) Id:" + id, e);
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
-    public boolean updateById(Role role) {
-        logger.info("updateById:" + role);
+    public Optional<Role> updateById(Role role) {
+        logger.info("updateById (Role):" + role);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "UPDATE  public.\"ROLE\" SET name=?, description=?" +
@@ -72,11 +77,11 @@ public class RoleDao implements GenericDao<Role> {
             preparedStatement.setString(1, role.getName().name());
             preparedStatement.setString(2, role.getDescription());
             System.out.println(preparedStatement.executeUpdate());
-            return true;
+            return this.getById(role.getId());
         } catch (SQLException e) {
-            logger.error(role.toString(), e);
+            logger.error("Exception in updateById(Role):" + role.toString(), e);
         }
-        return false;
+        return Optional.empty();
     }
 
     @Override
@@ -88,7 +93,7 @@ public class RoleDao implements GenericDao<Role> {
             preparedStatement.setInt(1, id);
             System.out.println(preparedStatement.executeUpdate());
         } catch (SQLException e) {
-            logger.error("Id:" + id, e);
+            logger.error("Exception in deleteById(Role) Id:" + id, e);
             return false;
         }
         return true;
@@ -96,7 +101,7 @@ public class RoleDao implements GenericDao<Role> {
 
     @Override
     public List<Role> getAll() {
-        logger.info("getAll");
+        logger.info("getAll(Role)");
         List<Role> roles = new ArrayList<>();
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -110,14 +115,14 @@ public class RoleDao implements GenericDao<Role> {
                 roles.add(role);
             }
         } catch (SQLException e) {
-            logger.error(e);
+            logger.error("Exception in getAll(Role)", e);
         }
         return roles;
     }
 
     @Override
-    public boolean addAll(List<Role> objs) {
-        logger.info("addAll:" + objs);
+    public List<Role> addAll(List<Role> objs) {
+        logger.info("addAll(Role): List<Role>:" + objs);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "INSERT INTO  public.\"ROLE\" values (DEFAULT, ?, ?)");
@@ -127,11 +132,20 @@ public class RoleDao implements GenericDao<Role> {
                 preparedStatement.addBatch();
             }
             preparedStatement.executeBatch();
+            List<Role> roles = new ArrayList<>();
+            for (Role r: this.getAll()) {
+                for(Role s: objs) {
+                    if(r.getName().equals(s.getName()) &&
+                            r.getDescription().equals(s.getDescription())) {
+                        roles.add(r);
+                    }
+                }
+            }
+            return roles;
         } catch (SQLException e) {
-            logger.error(objs.toString(), e);
-            return false;
+            logger.error("Exception in addAll(Role)", e);
         }
-        return true;
+        return new ArrayList<>();
     }
 
     @Override
@@ -142,23 +156,7 @@ public class RoleDao implements GenericDao<Role> {
                     "truncate table  public.\"ROLE\" cascade ");
             System.out.println(preparedStatement.executeUpdate());
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean addM(Role role, Connection conn) {
-        logger.info("addM:" + role);
-        try {
-            PreparedStatement preparedStatement = conn.prepareStatement(
-                    "INSERT INTO  public.\"ROLE\" values (DEFAULT, ?, ?)");
-            preparedStatement.setString(1, role.getName().name());
-            preparedStatement.setString(2, role.getDescription());
-            System.out.println(preparedStatement.executeUpdate());
-        } catch (SQLException e) {
-            logger.error(role.toString(), e);
+            logger.error("Exception in truncate(Role)", e);
             return false;
         }
         return true;

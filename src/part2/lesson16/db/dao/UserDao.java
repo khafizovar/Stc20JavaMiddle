@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author KhafizovAR on 03.12.2019.
@@ -27,27 +28,35 @@ public class UserDao implements GenericDao<User> {
             ConnectionManagerJdbcImpl.getInstance();
 
     @Override
-    public boolean add(User user) {
-        logger.info("Add User" + user.toString());
+    public Optional<User> add(User user) {
+        logger.info("add User" + user.toString());
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO  public.\"USER\" values (DEFAULT, ?, ?, ?,?,?,?)");
+                    "INSERT INTO  public.\"USER\" values (DEFAULT, ?, ?, ?,?,?,?) RETURNING id");
             preparedStatement.setString(1, user.getName());
             preparedStatement.setObject(2, user.getBirthday());
             preparedStatement.setString(3, user.getLoginId());
             preparedStatement.setString(4, user.getCity());
             preparedStatement.setString(5, user.getEmail());
             preparedStatement.setString(6, user.getDescription());
-            System.out.println(preparedStatement.executeUpdate());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+
+            return Optional.of(new User(resultSet.getInt(1),
+                    user.getName(),
+                    user.getBirthday(),
+                    user.getLoginId(),
+                    user.getCity(),
+                    user.getEmail(),
+                    user.getDescription()));
         } catch (SQLException e) {
-            logger.error(user.toString(), e);
-            return false;
+            logger.error("Exception in add(User):" + user.toString(), e);
         }
-        return true;
+        return Optional.empty();
     }
 
     @Override
-    public User getById(Integer id) {
+    public Optional<User> getById(Integer id) {
         logger.info("getById User" + id);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -63,16 +72,16 @@ public class UserDao implements GenericDao<User> {
                         resultSet.getString(5),
                         resultSet.getString(6),
                         resultSet.getString(7));
-                return user;
+                return Optional.of(user);
             }
         } catch (SQLException e) {
-            logger.error("Id:" + id, e);
+            logger.error("Exception in getById(User) Id:" + id, e);
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
-    public boolean updateById(User user) {
+    public Optional<User> updateById(User user) {
         logger.info("updateById User" + user.toString());
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -85,11 +94,11 @@ public class UserDao implements GenericDao<User> {
             preparedStatement.setString(5, user.getEmail());
             preparedStatement.setString(6, user.getDescription());
             System.out.println(preparedStatement.executeUpdate());
-            return true;
+            return this.getById(user.getId());
         } catch (SQLException e) {
-            logger.error(user.toString(), e);
+            logger.error("Exception in updateById(User) User:" + user.toString(), e);
         }
-        return false;
+        return Optional.empty();
     }
 
     @Override
@@ -101,7 +110,7 @@ public class UserDao implements GenericDao<User> {
             preparedStatement.setInt(1, id);
             System.out.println(preparedStatement.executeUpdate());
         } catch (SQLException e) {
-            logger.error("Id:" + id, e);
+            logger.error("Exception in deleteById(User) Id:" + id, e);
             return false;
         }
         return true;
@@ -127,14 +136,14 @@ public class UserDao implements GenericDao<User> {
                 users.add(user);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Exception in getAll(Users)", e);
         }
         return users;
     }
 
     @Override
-    public boolean addAll(List<User> objs) {
-        logger.info("addAll" + objs);
+    public List<User> addAll(List<User> objs) {
+        logger.info("addAll(Users)" + objs);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "INSERT INTO  public.\"USER\" values (DEFAULT, ?, ?, ?,?,?,?)");
@@ -148,11 +157,17 @@ public class UserDao implements GenericDao<User> {
                 preparedStatement.addBatch();
             }
             System.out.println(preparedStatement.executeBatch());
+            List<User> res = new ArrayList<User>();
+            for(User source: objs) {
+                if(this.selectByNameAndLoginId(source.getName(), source.getLoginId()).isPresent()) {
+                    res.add(source);
+                }
+            }
+            return res;
         } catch (SQLException e) {
-            logger.error(objs.toString(), e);
-            return false;
+            logger.error("Exception in addAll(Users) List<User>:" + objs.toString(), e);
         }
-        return true;
+        return  new ArrayList<User>();
     }
 
     @Override
@@ -163,7 +178,7 @@ public class UserDao implements GenericDao<User> {
                     "truncate table  public.\"USER\" cascade");
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Exception in truncate(User)", e);
             return false;
         }
         return true;
@@ -175,7 +190,7 @@ public class UserDao implements GenericDao<User> {
      * @param loginId
      * @return
      */
-    public User selectByNameAndLoginId(String name, String loginId) {
+    public Optional<User> selectByNameAndLoginId(String name, String loginId) {
         logger.info("selectByNameAndLoginId:" + name + ";"+ loginId);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -192,31 +207,11 @@ public class UserDao implements GenericDao<User> {
                         resultSet.getString(5),
                         resultSet.getString(6),
                         resultSet.getString(7));
-                return user;
+                return Optional.of(user);
             }
         } catch (SQLException e) {
-            logger.error("name:" + name + "; loginId: " + loginId, e);
+            logger.error("Exception in selectByNameAndLoginId name:" + name + "; loginId: " + loginId, e);
         }
-        return null;
-    }
-
-    @Override
-    public boolean addM(User user, Connection conn) {
-        logger.info("addM:" + user.toString());
-        try {
-            PreparedStatement preparedStatement = conn.prepareStatement(
-                    "INSERT INTO  public.\"USER\" values (DEFAULT, ?, ?, ?,?,?,?)");
-            preparedStatement.setString(1, user.getName());
-            preparedStatement.setObject(2, user.getBirthday());
-            preparedStatement.setString(3, user.getLoginId());
-            preparedStatement.setString(4, user.getCity());
-            preparedStatement.setString(5, user.getEmail());
-            preparedStatement.setString(6, user.getDescription());
-            System.out.println(preparedStatement.executeUpdate());
-        } catch (SQLException e) {
-            logger.error(user.toString(), e);
-            return false;
-        }
-        return true;
+        return Optional.empty();
     }
 }

@@ -32,7 +32,6 @@ public class UserDao implements GenericDao<User> {
     public static final String INSERT_INTO_PUBLIC_USER_VALUES_DEFAULT1 = "INSERT INTO  public.\"USER\" values (DEFAULT, ?, ?, ?,?,?,?)";
     public static final String TRUNCATE_TABLE_PUBLIC_USER_CASCADE = "truncate table  public.\"USER\" cascade";
     public static final String SELECT_FROM_PUBLIC_USER_WHERE_NAME_AND_LOGIN_ID = "SELECT * FROM public.\"USER\" WHERE name = ? and \"login_ID\" = ?";
-    public static final String INSERT_INTO_PUBLIC_USER_VALUES_DEFAULT2 = "INSERT INTO  public.\"USER\" values (DEFAULT, ?, ?, ?,?,?,?)";
 
     private ConnectionManager connectionManager;
 

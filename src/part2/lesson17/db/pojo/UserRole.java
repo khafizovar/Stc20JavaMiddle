@@ -16,6 +16,10 @@ public class UserRole {
         this.roleId = roleId;
     }
 
+    public UserRole(Integer userId, Integer roleId) {
+        this(-1, userId, roleId);
+    }
+
     public Integer getId() {
         return id;
     }
@@ -38,5 +42,25 @@ public class UserRole {
                 ", userId=" + userId +
                 ", roleId=" + roleId +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserRole userRole = (UserRole) o;
+
+        if (id != null ? !id.equals(userRole.id) : userRole.id != null) return false;
+        if (!userId.equals(userRole.userId)) return false;
+        return roleId.equals(userRole.roleId);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + userId.hashCode();
+        result = 31 * result + roleId.hashCode();
+        return result;
     }
 }

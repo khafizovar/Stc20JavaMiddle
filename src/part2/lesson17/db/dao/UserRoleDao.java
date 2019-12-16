@@ -29,7 +29,6 @@ public class UserRoleDao implements GenericDao<UserRole> {
     public static final String DELETE_FROM_PUBLIC_USER_ROLE_WHERE_ID = "DELETE FROM  public.\"USER_ROLE\" WHERE id=?";
     public static final String SELECT_FROM_PUBLIC_USER_ROLE = "SELECT * FROM  public.\"USER_ROLE\"";
     public static final String TRUNCATE_TABLE_PUBLIC_USER_ROLE = "truncate table  public.\"USER_ROLE\"";
-    public static final String INSERT_INTO_PUBLIC_USER_ROLE_VALUES_DEFAULT1 = "INSERT INTO  public.\"USER_ROLE\" values (DEFAULT, ?, ?)";
 
     private ConnectionManager connectionManager;
 

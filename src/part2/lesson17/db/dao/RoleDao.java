@@ -30,7 +30,6 @@ public class RoleDao implements GenericDao<Role> {
     public static final String SELECT_FROM_PUBLIC_ROLE = "SELECT * FROM  public.\"ROLE\"";
     public static final String INSERT_INTO_PUBLIC_ROLE_VALUES_DEFAULT1 = "INSERT INTO  public.\"ROLE\" values (DEFAULT, ?, ?)";
     public static final String TRUNCATE_TABLE_PUBLIC_ROLE_CASCADE = "truncate table  public.\"ROLE\" cascade";
-    public static final String INSERT_INTO_PUBLIC_ROLE_VALUES_DEFAULT2 = "INSERT INTO  public.\"ROLE\" values (DEFAULT, ?, ?)";
 
     private ConnectionManager connectionManager;
 

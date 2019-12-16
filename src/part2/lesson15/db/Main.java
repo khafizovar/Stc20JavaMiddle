@@ -46,19 +46,19 @@ public class Main {
         userDao.truncate();
         System.out.println("Задание 2-а");
         //Заполняем пользователей
-        userDao.add(new User(-1, "user1",
+        userDao.add(new User(-1, "Иванов Иван Иванович",
                 LocalDate.of(2015, Month.JULY, 29),
                 "user1",
                 "Orlando",
                 "user1@notreal.ru",
                 "user1 description"));
-        userDao.add(new User(-1, "user2",
+        userDao.add(new User(-1, "Сидоров Николай Петрович",
                 LocalDate.of(1980, Month.AUGUST, 3),
                 "user2",
                 "Montreal",
                 "user2@notreal.ru",
                 "user2 description"));
-        userDao.add(new User(-1, "user3",
+        userDao.add(new User(-1, "Никольский Олесь Викторович",
                 LocalDate.of(1955, Month.OCTOBER, 2),
                 "user3",
                 "Moscow",
@@ -102,12 +102,12 @@ public class Main {
         //Последнему выдаем биллинга
         urDao.add(new UserRole(-1, users.get(users.size() -1 ).getId(), biilingRole.getId()));
         System.out.println("Задание 3");
-        System.out.println(((UserDao)userDao).selectByNameAndLoginId("user1", "user1").toString());
+        System.out.println(((UserDao)userDao).selectByNameAndLoginId("Иванов Иван Иванович", "user1").toString());
 
         System.out.println("Задание 4-a");
         Connection conn = ConnectionManagerJdbcImpl.getInstance().getConnection();
         conn.setAutoCommit(false);
-        userDao.add(new User(-1, "user555",
+        userDao.add(new User(-1, "Петрова Лариса Федоровна",
                 LocalDate.of(2099, Month.JULY, 29),
                 "user555",
                 "Orlando",
@@ -127,7 +127,7 @@ public class Main {
         System.out.println("Задание 4-б");
 
         conn.setAutoCommit(false);
-        userDao.add(new User(-1, "user777",
+        userDao.add(new User(-1, "Джон Борис Леннон",
                 LocalDate.of(2001, Month.JULY, 29),
                 "user777",
                 "Oslo",

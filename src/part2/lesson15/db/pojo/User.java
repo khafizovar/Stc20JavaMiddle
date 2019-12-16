@@ -24,6 +24,10 @@ public class User {
         this.description = description;
     }
 
+    public User(String name, LocalDate birthday, String loginId, String city, String email, String description) {
+        this(-1,name,birthday,loginId,city,email,description);
+    }
+
     public Integer getId() {
         return id;
     }

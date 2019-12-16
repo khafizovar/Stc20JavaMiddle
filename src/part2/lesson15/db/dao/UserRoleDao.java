@@ -3,15 +3,18 @@ package part2.lesson15.db.dao;
 import part2.lesson15.db.ConnectionManager.ConnectionManager;
 import part2.lesson15.db.ConnectionManager.ConnectionManagerJdbcImpl;
 import part2.lesson15.db.pojo.Role;
+import part2.lesson15.db.pojo.User;
 import part2.lesson15.db.pojo.UserRole;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import javax.swing.text.html.Option;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author KhafizovAR on 03.12.2019.
@@ -23,22 +26,27 @@ public class UserRoleDao implements GenericDao<UserRole> {
             ConnectionManagerJdbcImpl.getInstance();
 
     @Override
-    public boolean add(UserRole ur) {
+    public Optional<UserRole> add(UserRole ur) {
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO  public.\"USER_ROLE\" values (DEFAULT, ?, ?)");
+                    "INSERT INTO  public.\"USER_ROLE\" values (DEFAULT, ?, ?) RETURNING id");
             preparedStatement.setInt(1, ur.getUserId());
             preparedStatement.setInt(2, ur.getRoleId());
-            System.out.println(preparedStatement.executeUpdate());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            Optional.of(new UserRole(resultSet.getInt(1),
+                    ur.getUserId(),
+                    ur.getRoleId()));
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return Optional.empty();
         }
-        return true;
+        return Optional.empty();
     }
 
     @Override
-    public UserRole getById(Integer id) {
+    public Optional<UserRole> getById(Integer id) {
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT * FROM  public.\"USER_ROLE\" WHERE id = ?");
@@ -49,16 +57,16 @@ public class UserRoleDao implements GenericDao<UserRole> {
                         resultSet.getInt(1),
                         resultSet.getInt(2),
                         resultSet.getInt(3));
-                return ur;
+                return Optional.of(ur);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
-    public boolean updateById(UserRole ur) {
+    public Optional<UserRole> updateById(UserRole ur) {
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "UPDATE  public.\"USER_ROLE\" SET user_id=?, role_id=?" +
@@ -66,11 +74,11 @@ public class UserRoleDao implements GenericDao<UserRole> {
             preparedStatement.setInt(1, ur.getUserId());
             preparedStatement.setInt(2, ur.getRoleId());
             System.out.println(preparedStatement.executeUpdate());
-            return true;
+            return this.getById(ur.getId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return Optional.empty();
     }
 
     @Override
@@ -125,18 +133,4 @@ public class UserRoleDao implements GenericDao<UserRole> {
         throw new NotImplementedException();
     }
 
-    @Override
-    public boolean addM(UserRole ur, Connection conn) {
-        try {
-            PreparedStatement preparedStatement = conn.prepareStatement(
-                    "INSERT INTO  public.\"USER_ROLE\" values (DEFAULT, ?, ?)");
-            preparedStatement.setInt(1, ur.getUserId());
-            preparedStatement.setInt(2, ur.getRoleId());
-            System.out.println(preparedStatement.executeUpdate());
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
 }

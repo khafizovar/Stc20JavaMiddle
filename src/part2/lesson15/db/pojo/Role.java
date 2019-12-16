@@ -18,6 +18,10 @@ public class Role {
         this.description = description;
     }
 
+    public Role(Roles name, String description) {
+        this(-1, name, description);
+    }
+
     public Integer getId() {
         return id;
     }

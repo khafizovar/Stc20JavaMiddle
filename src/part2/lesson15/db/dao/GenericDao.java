@@ -12,17 +12,17 @@ import java.util.Optional;
  * @project Stc20JavaMiddle
  */
 public interface GenericDao<T> {
-    public Optional<T> add(T pojo);
+    Optional<T> add(T pojo);
 
-    public Optional<T> getById(Integer id);
+    Optional<T> getById(Integer id);
 
-    public Optional<T> updateById(T pojo);
+    Optional<T> updateById(T pojo);
 
-    public boolean deleteById(Integer id);
+    boolean deleteById(Integer id);
 
-    public List<T> getAll();
+    List<T> getAll();
 
-    public boolean addAll(List<T> objs);
+    boolean addAll(List<T> objs);
 
-    public boolean truncate();
+    boolean truncate();
 }

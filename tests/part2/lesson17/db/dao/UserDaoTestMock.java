@@ -2,11 +2,16 @@ package part2.lesson17.db.dao;
 
 
 import org.junit.jupiter.api.*;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import part2.lesson17.db.ConnectionManager.ConnectionManager;
 import part2.lesson17.db.ConnectionManager.ConnectionManagerJdbcImpl;
 import part2.lesson17.db.pojo.User;
 
 import javax.swing.text.html.Option;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Month;
@@ -15,41 +20,71 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.matches;
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 /**
  * @author KhafizovAR on 16.12.2019.
  * @project Stc20JavaMiddle
  */
-class UserDaoTests {
+class UserDaoTestMock {
 
     private static UserDao userDao;
-    private static ConnectionManager connectionManager;
+    private ConnectionManager connectionManager;
+    private Connection connection;
+    @Mock
+    private PreparedStatement preparedStatement;
+    @Mock
+    private ResultSet resultSet;
 
-    @BeforeAll
-    static void init() {
-        connectionManager = ConnectionManagerJdbcImpl.getInstance();
+    @BeforeEach
+    void init() throws SQLException {
+        initMocks(this);
+        connectionManager = spy(ConnectionManagerJdbcImpl.getInstance());
+        connection = mock(Connection.class);
         userDao = new UserDao(connectionManager);
-        userDao.truncate();
-
     }
 
     @AfterAll
     static void tearDown() throws SQLException {
-        connectionManager.getConnection().close();
+
     }
 
     @Test
-    void add() {
-        User newUser = userDao.add(new User("Иванов Иван Иванович",
+    void add() throws SQLException {
+        User newUser = new User("Иванов Иван Иванович",
                 LocalDate.of(2015, Month.JULY, 29),
                 "user_addTest",
                 "Orlando",
                 "user1@notreal.ru",
-                "user1 description")).get();
+                "user1 description");
+
         assertNotNull(newUser);
+        when(connectionManager.getConnection()).thenReturn(connection);
+        doReturn(preparedStatement).when(connection).prepareStatement(userDao.INSERT_INTO_PUBLIC_USER_VALUES_DEFAULT);
+
+
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true);
+        when(resultSet.getInt(1)).thenReturn(-1);
+
+        Optional<User> addedUser = userDao.add(newUser);
+
+        verify(connectionManager, times(1)).getConnection();
+        verify(connection, times(1)).prepareStatement(userDao.INSERT_INTO_PUBLIC_USER_VALUES_DEFAULT);
+        verify(preparedStatement, times(1)).setString(1, newUser.getName());
+        verify(preparedStatement, times(1)).setObject(2, newUser.getBirthday());
+        verify(preparedStatement, times(1)).setString(3, newUser.getLoginId());
+        verify(preparedStatement, times(1)).setString(4, newUser.getCity());
+        verify(preparedStatement, times(1)).setString(5, newUser.getEmail());
+        verify(preparedStatement, times(1)).setString(6, newUser.getDescription());
+        verify(preparedStatement, times(1)).executeQuery();
+        assertEquals(newUser, addedUser.get());
     }
 
-    @Test
+    /*@Test
     void getById() {
         User newUser = userDao.add(new User("Иванов Иван Иванович",
                 LocalDate.of(2015, Month.JULY, 29),
@@ -60,9 +95,9 @@ class UserDaoTests {
         assertNotNull(newUser);
         User controlUser = userDao.getById(newUser.getId()).get();
         assertEquals(newUser,controlUser);
-    }
+    }*/
 
-    @Test
+    /*@Test
     void updateById() {
         User newUser = userDao.add(new User("Иванов Иван Иванович",
                 LocalDate.of(2015, Month.JULY, 29),
@@ -152,5 +187,5 @@ class UserDaoTests {
                 "user1 description")).get();
         User controlUser = userDao.selectByNameAndLoginId(newUser.getName(), newUser.getLoginId()).get();
         assertEquals(controlUser, newUser);
-    }
+    }*/
 }

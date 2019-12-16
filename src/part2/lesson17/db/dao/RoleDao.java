@@ -28,7 +28,6 @@ public class RoleDao implements GenericDao<Role> {
     public static final String SELECT_FROM_PUBLIC_ROLE_WHERE_ID = "SELECT * FROM  public.\"ROLE\" WHERE id = ?";
     public static final String DELETE_FROM_PUBLIC_ROLE_WHERE_ID = "DELETE FROM  public.\"ROLE\" WHERE id=?";
     public static final String SELECT_FROM_PUBLIC_ROLE = "SELECT * FROM  public.\"ROLE\"";
-    public static final String INSERT_INTO_PUBLIC_ROLE_VALUES_DEFAULT1 = "INSERT INTO  public.\"ROLE\" values (DEFAULT, ?, ?)";
     public static final String TRUNCATE_TABLE_PUBLIC_ROLE_CASCADE = "truncate table  public.\"ROLE\" cascade";
 
     private ConnectionManager connectionManager;
@@ -137,7 +136,7 @@ public class RoleDao implements GenericDao<Role> {
         logger.info("addAll(Role): List<Role>:" + objs);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    INSERT_INTO_PUBLIC_ROLE_VALUES_DEFAULT1);
+                    INSERT_INTO_PUBLIC_ROLE_VALUES_DEFAULT);
             for (Role role: objs) {
                 preparedStatement.setString(1, role.getName().name());
                 preparedStatement.setString(2, role.getDescription());

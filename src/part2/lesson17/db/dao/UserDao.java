@@ -29,7 +29,6 @@ public class UserDao implements GenericDao<User> {
     public static final String UPDATE_PUBLIC_USER_SET_NAME_BIRTHDAY_LOGIN_ID_CITY_EMAIL_DESCRIPTION_WHERE_ID = "UPDATE  public.\"USER\" SET name=?, birthday=?, \"login_ID\"=?, city=?, email=?, description=? WHERE id=?";
     public static final String DELETE_FROM_PUBLIC_USER_WHERE_ID = "DELETE FROM  public.\"USER\" WHERE id=?";
     public static final String SELECT_FROM_PUBLIC_USER = "SELECT * FROM  public.\"USER\"";
-    public static final String INSERT_INTO_PUBLIC_USER_VALUES_DEFAULT1 = "INSERT INTO  public.\"USER\" values (DEFAULT, ?, ?, ?,?,?,?)";
     public static final String TRUNCATE_TABLE_PUBLIC_USER_CASCADE = "truncate table  public.\"USER\" cascade";
     public static final String SELECT_FROM_PUBLIC_USER_WHERE_NAME_AND_LOGIN_ID = "SELECT * FROM public.\"USER\" WHERE name = ? and \"login_ID\" = ?";
 
@@ -158,7 +157,7 @@ public class UserDao implements GenericDao<User> {
         logger.info("addAll" + objs);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    INSERT_INTO_PUBLIC_USER_VALUES_DEFAULT1);
+                    INSERT_INTO_PUBLIC_USER_VALUES_DEFAULT);
             for (User user: objs) {
                 preparedStatement.setString(1, user.getName());
                 preparedStatement.setObject(2, user.getBirthday());

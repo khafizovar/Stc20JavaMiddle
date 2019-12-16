@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author KhafizovAR on 03.12.2019.
@@ -22,7 +23,7 @@ public class UserRoleDao implements GenericDao<UserRole> {
 
     private static final Logger logger = LogManager.getLogger(UserRoleDao.class);
 
-    public static final String INSERT_INTO_PUBLIC_USER_ROLE_VALUES_DEFAULT = "INSERT INTO  public.\"USER_ROLE\" values (DEFAULT, ?, ?)";
+    public static final String INSERT_INTO_PUBLIC_USER_ROLE_VALUES_DEFAULT = "INSERT INTO  public.\"USER_ROLE\" values (DEFAULT, ?, ?) RETURNING id";
     public static final String SELECT_FROM_PUBLIC_USER_ROLE_WHERE_ID = "SELECT * FROM  public.\"USER_ROLE\" WHERE id = ?";
     public static final String UPDATE_PUBLIC_USER_ROLE_SET_USER_ID_ROLE_ID_WHERE_ID = "UPDATE  public.\"USER_ROLE\" SET user_id=?, role_id=? WHERE id=?";
     public static final String DELETE_FROM_PUBLIC_USER_ROLE_WHERE_ID = "DELETE FROM  public.\"USER_ROLE\" WHERE id=?";
@@ -37,23 +38,26 @@ public class UserRoleDao implements GenericDao<UserRole> {
     }
 
     @Override
-    public boolean add(UserRole ur) {
-        logger.info("add:" + ur);
+    public Optional<UserRole> add(UserRole ur) {
+        logger.info("add(UserRole):" + ur);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     INSERT_INTO_PUBLIC_USER_ROLE_VALUES_DEFAULT);
             preparedStatement.setInt(1, ur.getUserId());
             preparedStatement.setInt(2, ur.getRoleId());
-            System.out.println(preparedStatement.executeUpdate());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return Optional.of(new UserRole(resultSet.getInt(1),
+                    ur.getUserId(),
+                    ur.getRoleId()));
         } catch (SQLException e) {
-            logger.error(ur.toString(), e);
-            return false;
+            logger.error("Exception in add(UserRole) UserRole:" + ur.toString(), e);
         }
-        return true;
+        return Optional.empty();
     }
 
     @Override
-    public UserRole getById(Integer id) {
+    public Optional<UserRole> getById(Integer id) {
         logger.info("getById:" + id);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -65,16 +69,16 @@ public class UserRoleDao implements GenericDao<UserRole> {
                         resultSet.getInt(1),
                         resultSet.getInt(2),
                         resultSet.getInt(3));
-                return ur;
+                return Optional.of(ur);
             }
         } catch (SQLException e) {
             logger.error("Id:" + id, e);
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
-    public boolean updateById(UserRole ur) {
+    public Optional<UserRole> updateById(UserRole ur) {
         logger.info("updateById:" + ur);
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -83,11 +87,11 @@ public class UserRoleDao implements GenericDao<UserRole> {
             preparedStatement.setInt(2, ur.getRoleId());
             preparedStatement.setInt(3, ur.getId());
             System.out.println(preparedStatement.executeUpdate());
-            return true;
+            return this.getById(ur.getId());
         } catch (SQLException e) {
-            logger.error(ur.toString(), e);
+            logger.error("Exception in getById(UserRole) UserRole:" + ur.toString(), e);
         }
-        return false;
+        return Optional.empty();
     }
 
     @Override
@@ -141,23 +145,7 @@ public class UserRoleDao implements GenericDao<UserRole> {
     }
 
     @Override
-    public boolean addAll(List<UserRole> objs) {
+    public List<UserRole> addAll(List<UserRole> objs) {
         throw new NotImplementedException();
-    }
-
-    @Override
-    public boolean addM(UserRole ur, Connection conn) {
-        logger.info("addM:" + ur);
-        try {
-            PreparedStatement preparedStatement = conn.prepareStatement(
-                    INSERT_INTO_PUBLIC_USER_ROLE_VALUES_DEFAULT1);
-            preparedStatement.setInt(1, ur.getUserId());
-            preparedStatement.setInt(2, ur.getRoleId());
-            System.out.println(preparedStatement.executeUpdate());
-        } catch (SQLException e) {
-            logger.error(ur.toString(), e);
-            return false;
-        }
-        return true;
     }
 }

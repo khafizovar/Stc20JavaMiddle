@@ -129,7 +129,7 @@ public class UserRoleDao implements GenericDao<UserRole> {
     }
 
     @Override
-    public boolean addAll(List<UserRole> objs) {
+    public List<UserRole> addAll(List<UserRole> objs) {
         throw new NotImplementedException();
     }
 

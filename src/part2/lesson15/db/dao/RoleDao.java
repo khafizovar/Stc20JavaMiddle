@@ -113,7 +113,7 @@ public class RoleDao implements GenericDao<Role> {
     }
 
     @Override
-    public boolean addAll(List<Role> objs) {
+    public List<Role> addAll(List<Role> objs) {
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "INSERT INTO  public.\"ROLE\" values (DEFAULT, ?, ?)");
@@ -123,11 +123,20 @@ public class RoleDao implements GenericDao<Role> {
                 preparedStatement.addBatch();
             }
             preparedStatement.executeBatch();
+            List<Role> roles = new ArrayList<>();
+            for (Role r: this.getAll()) {
+                for(Role s: objs) {
+                    if(r.getName().equals(s.getName()) &&
+                        r.getDescription().equals(s.getDescription())) {
+                            roles.add(r);
+                    }
+                }
+            }
+            return roles;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
-        return true;
+        return new ArrayList<>();
     }
 
     @Override

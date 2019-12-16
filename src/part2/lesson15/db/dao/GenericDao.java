@@ -22,7 +22,7 @@ public interface GenericDao<T> {
 
     List<T> getAll();
 
-    boolean addAll(List<T> objs);
+    List<T> addAll(List<T> objs);
 
     boolean truncate();
 }

@@ -137,7 +137,7 @@ public class UserDao implements GenericDao<User> {
     }
 
     @Override
-    public boolean addAll(List<User> objs) {
+    public List<User> addAll(List<User> objs) {
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "INSERT INTO  public.\"USER\" values (DEFAULT, ?, ?, ?,?,?,?)");
@@ -151,11 +151,17 @@ public class UserDao implements GenericDao<User> {
                 preparedStatement.addBatch();
             }
             System.out.println(preparedStatement.executeBatch());
+            List<User> res = new ArrayList<User>();
+            for(User source: objs) {
+                if(this.selectByNameAndLoginId(source.getName(), source.getLoginId()).isPresent()) {
+                    res.add(source);
+                }
+            }
+            return res;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
-        return true;
+        return  new ArrayList<User>();
     }
 
     @Override
@@ -177,7 +183,7 @@ public class UserDao implements GenericDao<User> {
      * @param loginId
      * @return
      */
-    public User selectByNameAndLoginId(String name, String loginId) {
+    public Optional<User> selectByNameAndLoginId(String name, String loginId) {
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT * FROM public.\"USER\" WHERE name = ? and \"login_ID\" = ?");
@@ -193,11 +199,11 @@ public class UserDao implements GenericDao<User> {
                         resultSet.getString(5),
                         resultSet.getString(6),
                         resultSet.getString(7));
-                return user;
+                return Optional.of(user);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return Optional.empty();
     }
 }

@@ -26,7 +26,7 @@ public class UserRoleDao implements GenericDao<UserRole> {
             ConnectionManagerJdbcImpl.getInstance();
 
     @Override
-    public Optional<UserRole> add(UserRole ur) {
+    public UserRole add(UserRole ur) {
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "INSERT INTO  public.\"USER_ROLE\" values (DEFAULT, ?, ?) RETURNING id");
@@ -35,13 +35,13 @@ public class UserRoleDao implements GenericDao<UserRole> {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            return Optional.of(new UserRole(resultSet.getInt(1),
+            return new UserRole(resultSet.getInt(1),
                     ur.getUserId(),
-                    ur.getRoleId()));
+                    ur.getRoleId());
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
-        return Optional.empty();
     }
 
     @Override

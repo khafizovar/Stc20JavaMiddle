@@ -12,7 +12,7 @@ import java.util.Optional;
  * @project Stc20JavaMiddle
  */
 public interface GenericDao<T> {
-    Optional<T> add(T pojo);
+    T add(T pojo);
 
     Optional<T> getById(Integer id);
 

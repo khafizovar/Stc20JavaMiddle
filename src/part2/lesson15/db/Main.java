@@ -67,33 +67,9 @@ public class Main {
 
         System.out.println("Задание 2-б");
         //Заполняем роли через batch
-        List<Role> addRoles = new ArrayList<>();
-
-        addRoles.add(new Role(-1, Role.Roles.ADMINISTRATION, "Администраторы"));
-        addRoles.add(new Role(-1, Role.Roles.CLIENTS, "Клиенты"));
-        addRoles.add(new Role(-1, Role.Roles.BILLING, "Биллинг"));
-        roleDao.addAll(addRoles);
-
-        Role adminRole = null;
-        Role userRole = null;
-        Role biilingRole = null;
-        //Выдаем всем клиента
-        for(Role role: roleDao.getAll()) {
-            switch (role.getName()) {
-                case ADMINISTRATION: {
-                    adminRole = role;
-                    break;
-                }
-                case CLIENTS: {
-                    userRole = role;
-                    break;
-                }
-                case BILLING: {
-                    biilingRole = role;
-                    break;
-                }
-            }
-        }
+        Role adminRole = roleDao.add(new Role(-1, Role.Roles.ADMINISTRATION, "Администраторы"));;
+        Role userRole = roleDao.add(new Role(-1, Role.Roles.CLIENTS, "Клиенты"));;
+        Role biilingRole =  roleDao.add(new Role(-1, Role.Roles.BILLING, "Биллинг"));;
 
         //Первому выдаем админа
         List<User> users = userDao.getAll();

@@ -23,7 +23,7 @@ public class RoleDao implements GenericDao<Role> {
             ConnectionManagerJdbcImpl.getInstance();
 
     @Override
-    public Optional<Role> add(Role role) {
+    public Role add(Role role) {
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "INSERT INTO  public.\"ROLE\" values (DEFAULT, ?, ?) RETURNING id");
@@ -32,13 +32,13 @@ public class RoleDao implements GenericDao<Role> {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            return Optional.of(new Role(resultSet.getInt(1),
+            return new Role(resultSet.getInt(1),
                     role.getName(),
-                    role.getDescription()));
+                    role.getDescription());
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
-        return Optional.empty();
     }
 
     @Override

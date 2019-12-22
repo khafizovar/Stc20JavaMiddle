@@ -25,7 +25,7 @@ public class UserDao implements GenericDao<User> {
             ConnectionManagerJdbcImpl.getInstance();
 
     @Override
-    public Optional<User> add(User user) {
+    public User add(User user) {
         try (Connection connection = connectionManager.getConnection();) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "INSERT INTO  public.\"USER\" values (DEFAULT, ?, ?, ?,?,?,?) RETURNING id");
@@ -38,17 +38,17 @@ public class UserDao implements GenericDao<User> {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            return Optional.of(new User(resultSet.getInt(1),
+            return new User(resultSet.getInt(1),
                     user.getName(),
                     user.getBirthday(),
                     user.getLoginId(),
                     user.getCity(),
                     user.getEmail(),
-                    user.getDescription()));
+                    user.getDescription());
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
-        return Optional.empty();
     }
 
     @Override

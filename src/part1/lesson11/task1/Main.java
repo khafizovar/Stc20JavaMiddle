@@ -84,11 +84,11 @@ public class Main {
         }
 
         //ДЗ-11
-        NumAndBool nma = (int [] nums, Boolean bool) -> {
+        NumAndBool nma = (int [] nums, Function<Integer, BigInteger> fn) -> {
             List<Thread> threads = new ArrayList<>();
             for (int n : nums) {
                 //ДЗ-11
-                Function<Integer, BigInteger> fn = (bool) ? nfWithoutCache : nfWithCache;
+                //Function<Integer, BigInteger> fn = (bool) ? nfWithoutCache : nfWithCache;
                 Thread thr = new Thread(() -> new Factorial(n, fn));
                 thr.start();
                 threads.add(thr);
@@ -105,33 +105,34 @@ public class Main {
         };
 
         long beginTime = System.currentTimeMillis();
-        Map<Integer, BigInteger> dataFirst  =  nma.run(numbers, false);
+        Map<Integer, BigInteger> dataFirst  =  nma.run(numbers, nfWithoutCache);
         System.out.println( "With Thread:" + (System.currentTimeMillis() - beginTime) + "мс");
         Cache.clearCache();
         beginTime = System.currentTimeMillis();
-        Map<Integer, BigInteger> dataSecond = nma.run(numbers, true);
+        Map<Integer, BigInteger> dataSecond = nma.run(numbers, nfWithCache);
         System.out.println( "With Thread and search:" + (System.currentTimeMillis() - beginTime) + "мс");
 
         //ДЗ-11
-        nma = (int [] nums, Boolean bool) -> {
+        nma = (int [] nums, Function<Integer, BigInteger> nf) -> {
             Map<Integer, BigInteger> res = new HashMap<>();
-            //ДЗ-11
-            Function<Integer, BigInteger> nf = (Integer n) -> {
-                BigInteger result = BigInteger.valueOf(1);
-                for (int i = 1; i <=n; i++){
-                    result = result.multiply(BigInteger.valueOf(i));
-                }
-                return result;
-            };
             for (int n : nums) {
                 res.put(n, nf.apply(n));
             }
             return res;
         };
 
+        //ДЗ-11
+        Function<Integer, BigInteger> nf = (Integer n) -> {
+            BigInteger result = BigInteger.valueOf(1);
+            for (int i = 1; i <=n; i++){
+                result = result.multiply(BigInteger.valueOf(i));
+            }
+            return result;
+        };
+
 
         beginTime = System.currentTimeMillis();
-        Map<Integer, BigInteger> dataThird =  nma.run(numbers, null);
+        Map<Integer, BigInteger> dataThird =  nma.run(numbers, nf);
         System.out.println( "Without Thread:" + (System.currentTimeMillis() - beginTime) + "мс");
 
         //ДЗ-11 Проверка на предмет расхождений

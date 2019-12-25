@@ -1,7 +1,5 @@
 package part1.lession02.task03;
 
-import helpers.Helper;
-
 import java.util.Arrays;
 
 /**
@@ -15,7 +13,7 @@ public class SelectionSort implements Sort {
      * @return отсортированный массив объектов Person @see {@link Person}
      */
     @Override
-    public Person[] sort(Person[] persons) throws Exception {
+    public Person[] sort(Person[] persons) {
         Person[] p = Arrays.copyOf(persons,persons.length);
         this.selectionSort(p);
         return p;
@@ -25,10 +23,7 @@ public class SelectionSort implements Sort {
      * Сортировка выбором
      * @param p
      */
-    private void selectionSort (Person[] p) throws Exception {
-        if(Helper.checkForDupleByAgeAndName(p))
-            throw new DupleByAgeAndNameFoundException("Найдены элементы с одинаковым именем и возрастом");
-
+    private void selectionSort (Person[] p) {
         for (int left = 0; left < p.length; left++) {
             int minInd = left;
             for (int i = left; i < p.length; i++) {

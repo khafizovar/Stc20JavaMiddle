@@ -21,7 +21,7 @@ public class Main {
         System.out.println(((MathBox)mb).summator());
         ((MathBox) mb).splitter(15);
         System.out.println(mb.toString());
-        //Компилятор не даст выполнить код приведенный ниже
+        //Компилятор не даст отработать коду ниже, это пример ограничения на добавление Object
         //mb.addBox(new Object());
     }
 }

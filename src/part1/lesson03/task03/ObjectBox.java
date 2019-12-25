@@ -10,7 +10,6 @@ import java.util.Set;
  */
 public class ObjectBox<T> {
     protected List<T> objectCollection = new LinkedList<>();
-
     /**
      * Добавление объекта в коллекцию
      * @param obj  Добавляемый объект

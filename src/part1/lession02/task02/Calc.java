@@ -60,13 +60,13 @@ public class Calc {
     public static void main(String[] args) throws Exception {
         Calc c = new Calc();
         CalcResult res = c.calculate(10000);
-        if(res.getSatisfyDigits() != null && res.getSatisfyDigits().size() > 0) {
+        if(res.getSatisfyDigits().size() > 0) {
             res.getSatisfyDigits().forEach(item -> System.out.println(item));
         } else {
             System.out.println("Чисел удовлетворяющих критерию не найдено");
         }
 
-        if(res.getNegativeNumbers() != null && res.getNegativeNumbers().size()  > 0) {
+        if(res.getNegativeNumbers().size()  > 0) {
             System.out.println("Найденные отрицательные числа:");
             res.getNegativeNumbers().forEach(item -> System.out.println(item));
         }

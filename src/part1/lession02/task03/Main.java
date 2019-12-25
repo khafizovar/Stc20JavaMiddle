@@ -45,19 +45,15 @@ public class Main {
                     rnd.nextBoolean() ? Person.SexEnum.MAN : Person.SexEnum.WOMAN);
             persons[i] = p;
         }
+
+        if(Main.checkForDupleByAgeAndName(persons))
+            throw new DupleByAgeAndNameFoundException("Найдены элементы с одинаковым именем и возрастом");
+
         System.out.println("Количество элементов: " + ARR_SIZE);
         System.out.println("-------------selection sort ----------");
-        long tmpDate = System.currentTimeMillis();
-        Person[] sorted1 = firstTypeSort.sort(persons);
-        System.out.println("Затрачено:" + (System.currentTimeMillis() - tmpDate) + " мс");
-        printInfo(sorted1);
-
+        printInfo(firstTypeSort, persons);
         System.out.println("-------------bubble sort ----------");
-        tmpDate = System.currentTimeMillis();
-        Person[] sorted2 = secondTypeSort.sort(persons);
-        System.out.println("Затрачено:" + (System.currentTimeMillis() - tmpDate) + " мс");
-        printInfo(sorted2);
-
+        printInfo(secondTypeSort, persons);
         System.out.println("------------дубли по возрасту и имени");
         persons = new Person[4];
         persons[0] = new Person(5, "a", Person.SexEnum.WOMAN );
@@ -71,9 +67,30 @@ public class Main {
      * Вывпод в консоль массива построчно
      * @param array объект для вывода в консоль
      */
-    static void printInfo(Person[] array) {
-        for (Person p: array) {
+    static void printInfo(Sort sortObj, Person[] persons) {
+
+        long tmpDate = System.currentTimeMillis();
+        Person[] sorted1 = sortObj.sort(persons);
+        System.out.println("Затрачено:" + (System.currentTimeMillis() - tmpDate) + " мс");
+        for (Person p: sorted1) {
             System.out.println(p.toString());
         }
+    }
+
+    /**
+     * Проверка на дубли по возрасту и имени
+     * @param p Массив для проверки
+     * @return true|false найдены|не найдены
+     */
+    public static boolean checkForDupleByAgeAndName(Person[] p) {
+        for (int i = 0; i < p.length - 1; i++) {
+            for (int j = p.length - 1; j > i; j--) {
+                if (p[i].getAge() == p[j].getAge() &&
+                        p[i].getName().equals(p[j].getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

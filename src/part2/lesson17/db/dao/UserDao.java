@@ -170,8 +170,9 @@ public class UserDao implements GenericDao<User> {
             System.out.println(preparedStatement.executeBatch());
             List<User> res = new ArrayList<User>();
             for(User source: objs) {
-                if(this.selectByNameAndLoginId(source.getName(), source.getLoginId()).isPresent()) {
-                    res.add(source);
+                Optional<User> fromDb = this.selectByNameAndLoginId(source.getName(), source.getLoginId());
+                if(fromDb.isPresent()) {
+                    res.add(fromDb.get());
                 }
             }
             return res;

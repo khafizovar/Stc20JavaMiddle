@@ -22,19 +22,19 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class UserDaoTests {
 
-    private static UserDao userDao;
-    private static ConnectionManager connectionManager;
+    private UserDao userDao;
+    private ConnectionManager connectionManager;
 
-    @BeforeAll
-    static void init() {
+    @BeforeEach
+    void init() {
         connectionManager = ConnectionManagerJdbcImpl.getInstance();
         userDao = new UserDao(connectionManager);
         userDao.truncate();
 
     }
 
-    @AfterAll
-    static void tearDown() throws SQLException {
+    @AfterEach
+    void tearDown() throws SQLException {
         connectionManager.getConnection().close();
     }
 
@@ -46,7 +46,13 @@ class UserDaoTests {
                 "Orlando",
                 "user1@notreal.ru",
                 "user1 description")).get();
-        assertNotNull(newUser);
+        User fromDb = userDao.getById(newUser.getId()).get();
+        assertEquals(newUser.getName(), fromDb.getName());
+        assertEquals(newUser.getLoginId(), fromDb.getLoginId());
+        assertEquals(newUser.getBirthday(), fromDb.getBirthday());
+        assertEquals(newUser.getDescription(),fromDb.getDescription());
+        assertEquals(newUser.getEmail(),fromDb.getEmail());
+        assertEquals(newUser.getCity(),fromDb.getCity());
     }
 
     @Test
@@ -88,7 +94,7 @@ class UserDaoTests {
         assertNotNull(newUser);
         userDao.deleteById(newUser.getId());
         Optional<User> controlUser = userDao.getById(newUser.getId());
-        assertTrue(!controlUser.isPresent());
+        assertFalse(controlUser.isPresent());
     }
 
     @Test
@@ -100,33 +106,42 @@ class UserDaoTests {
                 "user1@notreal.ru",
                 "user1 description")).get();
         assertTrue(userDao.getAll().size() > 0);
+
+        User fromDb = userDao.getAll().stream().filter(user -> newUser.getId().equals(user.getId()))
+                .findAny()
+                .orElse(null);
+        assertNotNull(fromDb);
+        assertEquals(newUser.getName(), fromDb.getName());
+        assertEquals(newUser.getLoginId(), fromDb.getLoginId());
+        assertEquals(newUser.getBirthday(), fromDb.getBirthday());
+        assertEquals(newUser.getDescription(),fromDb.getDescription());
+        assertEquals(newUser.getEmail(),fromDb.getEmail());
+        assertEquals(newUser.getCity(),fromDb.getCity());
     }
 
     @Test
     void addAll() {
         List<User> users = new ArrayList<>();
-        users.add(userDao.add(new User( "Иванов Иван Иванович",
+        users.add(new User( "Иванов Иван Иванович",
                 LocalDate.of(2015, Month.JULY, 29),
                 "user1_addAll",
                 "Orlando",
                 "user1@notreal.ru",
-                "user1 description")).get());
-        users.add(userDao.add(new User( "Сидоров Сидор Сидорович",
+                "user1 description"));
+        users.add(new User( "Сидоров Сидор Сидорович",
                 LocalDate.of(1980, Month.AUGUST, 3),
                 "user2_addAll",
                 "Montreal",
                 "user2@notreal.ru",
-                "user2 description")).get());
-        users.add(userDao.add(new User("Олегов Олег Олегович",
+                "user2 description"));
+        users.add(new User("Олегов Олег Олегович",
                 LocalDate.of(1955, Month.OCTOBER, 2),
                 "user3_addAll",
                 "Moscow",
                 "user3@notreal.ru",
-                "user3 description")).get());
+                "user3 description"));
         users = userDao.addAll(users);
         List<User> allUsers = userDao.getAll();
-        System.out.println(users);
-        System.out.println(allUsers);
         assertTrue(allUsers.containsAll(users));
     }
 

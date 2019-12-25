@@ -1,8 +1,6 @@
 package part1.lesson03.task03;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author KhafizovAR
@@ -10,7 +8,7 @@ import java.util.Set;
 public class MathBox extends ObjectBox<Number> {
 
     public MathBox(Number[] number) {
-        objectCollection = new HashSet<>(Arrays.asList(number));
+        objectCollection = new LinkedList<>(Arrays.asList(number));
     }
 
     /**
@@ -19,9 +17,9 @@ public class MathBox extends ObjectBox<Number> {
      */
     public Number summator() {
         double sum = 0;
-        for (Object n: this.objectCollection) {
+        for (Number n: this.objectCollection) {
             if(n != null)
-                sum += ((Number)n).doubleValue();
+                sum += n.doubleValue();
         }
         return sum;
     }
@@ -31,7 +29,7 @@ public class MathBox extends ObjectBox<Number> {
      * @param num делитель
      */
     public void splitter(double num) {
-        Set<Number> rez = new HashSet<>();
+        List<Number> rez = new LinkedList<>();
         if(this.objectCollection.contains(null)) {
             rez.add(null);
             this.objectCollection.remove(null);
@@ -51,43 +49,13 @@ public class MathBox extends ObjectBox<Number> {
         return this.objectCollection.remove(num);
     }
 
-    /**
-     * Добавление объекта в коллекцию
-     * @param obj  Добавляемый объект
-     */
     @Override
     public void addBox(Number obj) {
-        this.objectCollection.add(obj);
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((objectCollection == null) ? 0 : objectCollection.hashCode());
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "MathBox [objectCollection=" + objectCollection + "]";
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        MathBox other = (MathBox) obj;
-        if (objectCollection == null) {
-            if (other.objectCollection != null)
-                return false;
-        } else if (!objectCollection.equals(other.objectCollection))
-            return false;
-        return true;
+        if(!this.objectCollection.contains(obj)) {
+            this.objectCollection.add(obj);
+        } else {
+            System.out.println("Коллекция уже содержит данный элемент");
+        }
     }
 
 }

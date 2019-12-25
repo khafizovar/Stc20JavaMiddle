@@ -1,14 +1,15 @@
 package part1.lesson03.task03;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 /**
  * @author KhafizovAR
  */
 public class ObjectBox<T> {
-    Set<T> objectCollection = new HashSet<>();
-
+    protected List<T> objectCollection = new LinkedList<>();
     /**
      * Добавление объекта в коллекцию
      * @param obj  Добавляемый объект
@@ -31,31 +32,6 @@ public class ObjectBox<T> {
      */
     public String dump() {
         return this.toString();
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((objectCollection == null) ? 0 : objectCollection.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        ObjectBox other = (ObjectBox) obj;
-        if (objectCollection == null) {
-            if (other.objectCollection != null)
-                return false;
-        } else if (!objectCollection.equals(other.objectCollection))
-            return false;
-        return true;
     }
 
     @Override
